@@ -35,6 +35,8 @@ flutter:
     - assets/images/fondo.png
     - assets/images/medico.png
     - assets/images/paciente.png
+    - assets/images/menu.png
+    - assets/images/doctor.png
    
 
 

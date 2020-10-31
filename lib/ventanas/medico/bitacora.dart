@@ -1,13 +1,41 @@
 import 'package:flutter/material.dart';
+import 'package:demo1/controllers/usuario.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class Bitacora extends StatefulWidget {
   Bitacora({Key key}) : super(key: key);
+  
 
   @override
   _BitacoraState createState() => _BitacoraState();
 }
 
 class _BitacoraState extends State<Bitacora> {
+  
+  
+  
+  void addData() {
+    var url = "http://192.168.1.108/demo1/adbitacora.php";
+
+    http.post(url, body: {
+      "FechaHora": now.toString(),
+      "Nauseas": _nauseas.toString(),
+      "Vomitos": _vomito.toString(),
+      "Diarrea":_diarrea.toString(),
+      "Constipacion":_constipacion.toString(),
+      "Dolor":_dolor.toString(),
+      "Fatiga":_fatiga.toString(),
+      "PerdidaApetito":_perdidaapetito.toString(),
+      "Fiebre":_fiebre.toString(),
+      "SintomasResfrio":_sintomaresfrio.toString(),
+      "SintomasUnitarios":_sintomasunitarios.toString(),
+      "ValorICG":_valoricg.toString(),
+      "IdPaciente":_usuario.id.toString(),
+    });
+  }
+
+  
   final PageController control = PageController();
   int _nauseas= 0;
   int _vomito=0;
@@ -20,7 +48,14 @@ class _BitacoraState extends State<Bitacora> {
   int _sintomaresfrio=0;
   int _sintomasunitarios=0;
   int _valoricg=0;
+  DateTime now= new DateTime.now();
+  
+  final Usuario _usuario = new Usuario();
   void printear(){
+      int usuario= _usuario.id;
+      
+      print (now);
+      print (usuario);
       print (_nauseas);
       print (_vomito);
       print (_diarrea);
@@ -1866,7 +1901,10 @@ class _BitacoraState extends State<Bitacora> {
             ), 
             Row(
               children: [
-                RaisedButton(onPressed: printear, child: Text ('printear'))
+                RaisedButton(onPressed:(){
+                  addData();
+                  Navigator.popAndPushNamed(context, '/menup');
+                } , child: Text ('Ingresar'))
               ],
             ), 
           ],

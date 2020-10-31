@@ -1,39 +1,46 @@
 import 'package:flutter/material.dart';
-import 'package:demo1/login/loginmedico.dart';
+import 'package:demo1/main.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:demo1/controllers/usuario.dart';
 
-String username;
 
-class Loginpaciente extends StatefulWidget {
-  Loginpaciente({Key key}) : super(key: key);
-
+class Loginadmin extends StatefulWidget {
+  //Loginpaciente({Key key}) : super(key: key);
   @override
-  _LoginpacienteState createState() => _LoginpacienteState();
+  _LoginadminState createState() => _LoginadminState();
 }
 
-class _LoginpacienteState extends State<Loginpaciente> { 
+class _LoginadminState extends State<Loginadmin> { 
   TextEditingController controllerUser = new TextEditingController();
   TextEditingController controllerPass = new TextEditingController();
-
+  final Usuario _usuario = new Usuario();
   String mensaje = '';
      Future <List> login() async{
-    final response = await http.post("http://192.168.1.108/demo1/loginpaciente.php", body:{
+      
+      final response = await http.post("http://192.168.1.108/demo1/loginadmin.php", body:{
       "Correo":controllerUser.text,
-      "Contrasenia":controllerPass.text,
-    });
-    var datauser = json.decode(response.body);
+      "clave":controllerPass.text,
+      });
+      var datauser = json.decode(response.body);
 
-    if(datauser.length == 0){
+      if(datauser.length == 0){
+        setState(() {
+          mensaje="usuario o contraseña incorrecta";});
+      }else{
+        Navigator.popAndPushNamed(context, '/menuadmin');
       setState(() {
-        mensaje="usuario o contraseña incorrecta";});
-    }else{
-      Navigator.popAndPushNamed(context, '/menup');
-      setState(() {
-        username= datauser[2]['Correo'];
-        
+          int aux=int.parse(datauser[0]['IdPersona']);
+          _usuario.id= aux;
+          _usuario.nombre= datauser[0]['PrimerNombre'];
+          _usuario.telefono= datauser[0]['Telefono'];     
+          _usuario.clave= datauser[0]['Clave'];
+          _usuario.centro= datauser[0]['IdCentrooncologico'];
+          print(_usuario.centro);
+
       });
     }
+
     return datauser;
     }
   
@@ -77,6 +84,7 @@ class _LoginpacienteState extends State<Loginpaciente> {
                  padding: EdgeInsets.only(top: 93), 
                  child: Column(
                    children: <Widget> [
+                     
                      Container(
                        width: MediaQuery.of(context).size.width / 1.2,
                        padding: EdgeInsets.only(
@@ -184,11 +192,3 @@ class _LoginpacienteState extends State<Loginpaciente> {
     );
   }
 }
-
-/*InkWell(
-                 child:Text('hola',
-                   style: TextStyle(color: new Color(0xff662d8c),
-                   fontSize: 20)
-                 )
-               ),
-*/
