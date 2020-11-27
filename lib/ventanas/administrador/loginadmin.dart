@@ -23,7 +23,6 @@ class _LoginadminState extends State<Loginadmin> {
       "clave":controllerPass.text,
       });
       var datauser = json.decode(response.body);
-
       if(datauser.length == 0){
         setState(() {
           mensaje="usuario o contraseña incorrecta";});
@@ -35,12 +34,10 @@ class _LoginadminState extends State<Loginadmin> {
           _usuario.nombre= datauser[0]['PrimerNombre'];
           _usuario.telefono= datauser[0]['Telefono'];     
           _usuario.clave= datauser[0]['Clave'];
-          _usuario.centro= datauser[0]['IdCentrooncologico'];
+          _usuario.centro= datauser[0]['IdCetrooncologico'];
           print(_usuario.centro);
-
       });
     }
-
     return datauser;
     }
   
@@ -155,9 +152,9 @@ class _LoginadminState extends State<Loginadmin> {
                              right: 32,
                            ),
                            child: Text(
-                             'Ingresar como medico',
+                             'Ingresar como medico aqui',
                              style: TextStyle(
-                               color: Colors.grey,
+                               color: Colors.black,
                                )
                            ),
                            

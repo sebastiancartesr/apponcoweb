@@ -11,6 +11,11 @@ import 'package:demo1/ventanas/medico/agregarpaciente.dart';
 import 'package:demo1/ventanas/medico/ingresarbitacorasweb.dart';
 import 'package:demo1/ventanas/administrador/menuadmin.dart';
 import 'package:demo1/ventanas/administrador/loginadmin.dart';
+import 'package:demo1/ventanas/administrador/agregarmedico.dart';
+import 'package:demo1/ventanas/medico/enviarnotifi.dart';
+import 'package:demo1/ventanas/medico/editardatosp.dart';
+import 'package:demo1/ventanas/medico/elegirbitacora.dart';
+import 'package:demo1/ventanas/medico/verbitacorafinal.dart';
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget{
@@ -27,6 +32,11 @@ class MyApp extends StatelessWidget{
         "/agregarbitacora":(BuildContext context) => Bitacora(),
         "/menuadmin":(BuildContext context) => MenuAdmin(),
         "/loginadmin":(BuildContext context) => Loginadmin(),
+        "/agregarpersonal":(BuildContext context) => FormScreen2(),
+        "/enviarnoti":(BuildContext context) =>EnviarNotificacion(),
+        "/editardatos":(BuildContext context) =>FormScreen5(),
+        "/elegirbitacoramedico":(BuildContext context) =>ElegirBitacoramedico(),
+        "/verpacientesdos":(BuildContext context) =>VerPacientedos(),
         
       }
       ,
@@ -74,12 +84,7 @@ class _LoginmedicoState extends State<Loginmedico> {
           print(datauser[0]['IdPersona']);
           print(datauser[0]['IdEspecialista']);
       });
-      if(datauser[0]['NombreRol']=='medico' || datauser[0]['NombreRol']=='asistente'){
-        Navigator.popAndPushNamed(context, '/menutrabajador');
-      }else{
-        
-      }
-      
+      Navigator.popAndPushNamed(context, '/menutrabajador');
 
     }
     return datauser;
@@ -192,9 +197,9 @@ class _LoginmedicoState extends State<Loginmedico> {
                              right: 32,
                            ),
                            child: Text(
-                             'Ingresar como administrador',
+                             'Ingresar como administrador aqui',
                              style: TextStyle(
-                               color: Colors.grey,
+                               color: Colors.black,
                                )
                            ),
                            

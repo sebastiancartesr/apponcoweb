@@ -7,6 +7,9 @@ import 'package:demo1/ventanas/medico/verpacientesweb.dart';
 import 'package:demo1/ventanas/medico/veralertaspaciente.dart';
 import 'package:demo1/ventanas/medico/agregarpaciente.dart';
 import 'package:demo1/ventanas/medico/ingresarbitacorasweb.dart';
+import 'package:demo1/ventanas/medico/enviarnotifi.dart';
+import 'package:demo1/ventanas/medico/elegirbitacora.dart';
+import 'package:demo1/ventanas/medico/verbitacorafinal.dart';
 
 class MenuTrabajador extends StatefulWidget {
   MenuTrabajador({Key key}) : super(key: key);
@@ -22,9 +25,11 @@ class _MenuTrabajadorState extends State<MenuTrabajador> {
     switch(pos){
       case 0: return Bienvenido();
       case 1: return VerBitacoramedicoweb();
-      case 2: return VerPacienteweb();
+      //case 2: return VerPacienteweb();
+      case 2: return VerPacientedos();
       case 3: return VerAlertas();
       case 4: return Ingresarbitacora();
+      case 5: return EnviarNotificacion();
     }
   }
   _onSelect(int pos){
@@ -91,7 +96,8 @@ class _MenuTrabajadorState extends State<MenuTrabajador> {
             ),
             ListTile(
               title: Text('Enviar Notificaciones  '),
-              onTap: (){               
+              onTap: (){    
+                _onSelect(5);           
               },           
             ),
             ListTile(
@@ -118,7 +124,8 @@ class _MenuTrabajadorState extends State<MenuTrabajador> {
             ListTile(
               
               title: Text('Cerrar sesion'),
-              onTap: (){               
+              onTap: (){ 
+                Navigator.popAndPushNamed(context, '/loginmedico');
               }, 
             ),
           ]

@@ -13,6 +13,7 @@ class BitacoraController {
   String _sintomaresfrio='';
   String _sintomasunitarios='';
   String _valoricg='';
+  String _fechaaux='';
 
   String get nauseas => _nauseas;
   String get vomito => _vomito;
@@ -25,6 +26,8 @@ class BitacoraController {
   String get sintomaresfrio => _sintomaresfrio;
   String get sintomasunitarios => _sintomasunitarios;
   String get valoricg => _valoricg;
+  String get fechaaux => _fechaaux;
+
 
   set nauseas(String value) => _nauseas = value;
   set vomito(String value) => _vomito = value;
@@ -37,4 +40,5 @@ class BitacoraController {
   set sintomaresfrio(String value) => _sintomaresfrio = value;
   set sintomasunitarios(String value) => _sintomasunitarios = value;
   set valoricg(String value) => _valoricg = value;
+  set fechaaux(String value) => _fechaaux = value;
 }

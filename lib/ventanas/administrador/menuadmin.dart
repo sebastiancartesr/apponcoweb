@@ -7,6 +7,8 @@ import 'package:demo1/ventanas/medico/verpacientesweb.dart';
 import 'package:demo1/ventanas/medico/veralertaspaciente.dart';
 import 'package:demo1/ventanas/medico/agregarpaciente.dart';
 import 'package:demo1/ventanas/medico/ingresarbitacorasweb.dart';
+import 'package:demo1/ventanas/administrador/agregarmedico.dart';
+import 'package:demo1/ventanas/administrador/vertrabajadores.dart';
 
 class MenuAdmin extends StatefulWidget {
   MenuAdmin({Key key}) : super(key: key);
@@ -21,9 +23,10 @@ class _MenuAdminState extends State<MenuAdmin> {
   _getDrawer(int pos){
     switch(pos){
       case 0: return Bienvenido();
-      case 1: return VerBitacoramedicoweb();
-      case 2: return VerPacienteweb();
-      case 3: return VerAlertas();
+      case 2: return VerTrabajadores();
+      
+      
+      case 1: return FormScreen2();
       case 4: return Ingresarbitacora();
     }
   }
@@ -65,45 +68,21 @@ class _MenuAdminState extends State<MenuAdmin> {
             ),
             ListTile(
               leading: Icon(Icons.supervised_user_circle),
-              title: Text('Paciente'),         
+              title: Text('Personal'),         
             ),
             ListTile(
-              title: Text('Agregar Paciente'),
+              title: Text('Agregar Trabajador'),
               onTap: (){  
-                Navigator.popAndPushNamed(context,'/agregarpaciente');     
+                Navigator.popAndPushNamed(context,'/agregarpersonal');     
               },
             ),
             ListTile(
-              title: Text('Lista Paciente'),
+              title: Text('Lista Trabajadores'),
               onTap: (){  
                 _onSelect(2);             
               },
             ),
-            ListTile(
-              leading: Icon(Icons.message),
-              title: Text('Notificaciones'),
-            ),
-            ListTile(
-              title: Text('Ver Alertas'),
-              onTap: (){ 
-                _onSelect(3);           
-              },
-            ),
-            ListTile(
-              title: Text('Enviar Notificaciones  '),
-              onTap: (){               
-              },           
-            ),
-            ListTile(
-              leading: Icon(Icons.perm_contact_calendar),
-              title: Text('Bitacoras'),          
-            ),
-            ListTile(
-              title: Text('Ingresar Bitacora'),
-              onTap: (){ 
-                   _onSelect(4);           
-              },           
-            ),  
+
             ListTile(
               leading: Icon(Icons.account_circle),
               title: Text('Perfil'),

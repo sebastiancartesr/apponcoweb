@@ -113,7 +113,7 @@ class _ElegirFecha extends State<ElegirFecha> {
     }
   }
 
-
+/*
     Future <List> regbitacora() async{
       
       final response = await http.post("http://192.168.1.108/demo1/regbitacora.php", body:{
@@ -128,6 +128,36 @@ class _ElegirFecha extends State<ElegirFecha> {
         Navigator.popAndPushNamed(context,'/agregarbitacora');
         
       }else{
+        print('paso3');
+        showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+            title: Text('Ya has ingresado bitacoras el dia de hoy.'),
+            actions:<Widget>[
+              
+              RaisedButton(onPressed: (){
+                Navigator.of(context).pop();
+              },
+               child: Text('Aceptar'))
+            ],),
+        );          
+      }
+    return datauser;
+    }*/
+      Future <List> regbitacora() async{
+      
+      final response = await http.post("http://192.168.1.108/demo1/regbitacora.php", body:{
+      "IdPaciente":_paciente.idd,
+      "DataIni":_splitter(_paciente.fechabitacora),
+      });
+      var datauser = json.decode(response.body);
+      print('paso1');
+
+      if(datauser.length < 3){
+        print(datauser.length);
+        Navigator.pushNamed(context, '/agregarbitacora');
+      }else{
+        print(datauser.length);
         print('paso3');
         showDialog(
           context: context,
@@ -2108,7 +2138,8 @@ class _BitacoraState extends State<Bitacora> {
               children: [
                 RaisedButton(onPressed:(){
                   addData();
-                  Navigator.popAndPushNamed(context, '/menutrabajador');
+                  Navigator.of(context).pop(); 
+                 // Navigator.popAndPushNamed(context, '/menutrabajador');
                 } , child: Text ('Ingresar'))
               ],
             ), 

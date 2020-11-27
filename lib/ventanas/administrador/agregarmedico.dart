@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:demo1/controllers/usuario.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:demo1/controllers/auxpersona.dart';
 
 class FormScreen2 extends StatefulWidget {
   @override
@@ -46,6 +47,7 @@ class FormScreen2State extends State<FormScreen2> {
     Widget _buildEmail() {
     return TextFormField(
       decoration: InputDecoration(labelText: 'Email'),
+      maxLength: 40,
       validator: (String value) {
         if (value.isEmpty) {
           return 'Correo requerido';
@@ -67,6 +69,7 @@ class FormScreen2State extends State<FormScreen2> {
     Widget _buildPassword() {
     return TextFormField(
       decoration: InputDecoration(labelText: 'Contraseña'),
+      maxLength: 10,
       keyboardType: TextInputType.visiblePassword,
       validator: (String value) {
         if (value.isEmpty) {
@@ -147,6 +150,7 @@ class FormScreen2State extends State<FormScreen2> {
     Widget _buildPhoneNumber() {
     return TextFormField(
       decoration: InputDecoration(labelText: 'Numero de telefono'),
+      maxLength: 9,
       keyboardType: TextInputType.phone,
       validator: (String value) {
         if (value.isEmpty) {
@@ -183,9 +187,74 @@ class FormScreen2State extends State<FormScreen2> {
   @override
   
   Widget build(BuildContext context) {
-    String _centro=_usuario.centro;
+    final Persona _persona = new Persona();
 
-    void addPaciente() {
+    String _centro=_usuario.centro;
+//--------------------------------------------------------------------------
+    void addTrabajador(){
+      var url = "http://192.168.1.108/demo1/creartrabajador.php";
+      http.post(url, body: {
+        "IdPersona": _persona.iddd,
+        "IdRol": _persona.idrol,
+
+    }
+
+    
+    
+    );
+  Navigator.of(context).pop();
+    }
+
+//----------------------------------------------------------------------------
+  Future <List> getidrol() async{
+    final response = await http.post("http://192.168.1.108/demo1/idrol.php", body:{
+      "NombreRol":_persona.rol,
+    });
+    var datauser = json.decode(response.body);
+    print(datauser[0]);
+
+    if(datauser.length == 0){
+      print('error2');
+    }else{
+      setState(() {
+        
+          _persona.idrol= datauser[0]['IdRol'];
+          
+          print(_persona.idrol);
+          print('----------');
+      });    
+
+    }
+    addTrabajador();
+    return datauser;
+    }
+//---------------------------------------------------------------------------
+//-----idpersona agregada no se tiene
+
+   Future <List> getid() async{
+    final response = await http.post("http://192.168.1.108/demo1/buscarid.php", body:{
+      "Correo":_email,
+    });
+    var datauser = json.decode(response.body);
+
+    if(datauser.length == 0){
+      print('error1');
+    }else{
+      setState(() {
+          _persona.iddd= datauser[0]['IdPersona'];
+          print(_persona.iddd);
+      });    
+      
+    }
+    print('paso2');
+    getidrol();
+    print('paso3');
+    return datauser;
+    }
+//----------------------------------------------------------------------------
+
+
+    void addMedico() {
       var url = "http://192.168.1.108/demo1/agregarpersona.php";
 
       http.post(url, body: {
@@ -198,22 +267,26 @@ class FormScreen2State extends State<FormScreen2> {
         "SegundoApellido": _segundapellido,
         "Telefono": _phoneNumber,
         "Direccion": _direccion,
-        "IdCentrooncologico":_centro,
+        "IdCetrooncologico":_centro,
     }
     
     );
+    print('paso1');
+    getid();
+
   }
   //validar rut
-       Future <List> login() async{
+       Future <List> verificardatos() async{
       
       final response = await http.post("http://192.168.1.108/demo1/verdatospersona.php", body:{
       "Correo":_email,
-      "rut":_rut,
+      "Rut":_rut,
       });
       var datauser = json.decode(response.body);
 
       if(datauser.length == 0){
-        addPaciente();
+        addMedico();
+               
 
       }else{
         showDialog(
@@ -237,9 +310,15 @@ class FormScreen2State extends State<FormScreen2> {
 
   //----
     return Scaffold(
-      appBar: AppBar(title: Text("Agregar paciente")),
+      appBar: AppBar(
+        title: Text("Agregar paciente"),
+                  leading: new IconButton(
+            icon: new Icon(Icons.arrow_back_sharp),
+            onPressed: () => Navigator.of(context).pop(),
+          ),
+        ),
       body: Container(
-        margin: EdgeInsets.all(24),
+        margin: EdgeInsets.all(20),
         child: Form(
           key: _formKey,
           child: Column(
@@ -254,8 +333,9 @@ class FormScreen2State extends State<FormScreen2> {
               _buildSegundoApellido(),
               _buildPhoneNumber(),
               _buildDireccion(),
+              DropDown(),
 
-              SizedBox(height: 50),
+              SizedBox(height: 10),
               RaisedButton(
                 child: Text(
                   'Agregar',
@@ -267,8 +347,8 @@ class FormScreen2State extends State<FormScreen2> {
                   }
 
                   _formKey.currentState.save();
-                  addPaciente();
-                  Navigator.of(context).pop();
+                  verificardatos();
+                  
                   //Navigator.popAndPushNamed(context, '/menutrabajador');
                 },
               )
@@ -276,6 +356,46 @@ class FormScreen2State extends State<FormScreen2> {
           ),
         ),
       ),
+    );
+  }
+}
+class DropDown extends StatefulWidget {
+  DropDown({Key key}) : super(key: key);
+
+  @override
+  _DropDownState createState() => _DropDownState();
+}
+class _DropDownState extends State<DropDown> {
+  String dropdownValue = 'Medico';
+    final Persona _persona = new Persona();
+
+  @override
+  Widget build(BuildContext context) {
+    return DropdownButton<String>(
+      value: dropdownValue,
+      icon: Icon(Icons.arrow_downward),
+      iconSize: 24,
+      elevation: 16,
+      style: TextStyle(color: Colors.deepPurple),
+      underline: Container(
+        height: 2,
+        color: Colors.deepPurpleAccent,
+      ),
+      onChanged: (String newValue) {
+        setState(() {
+          dropdownValue = newValue;
+          _persona.rol= dropdownValue;
+          print('pruebarol');
+          print(_persona.rol);
+        });
+      },
+      items: <String>['Medico', 'Asistente']
+          .map<DropdownMenuItem<String>>((String value) {
+        return DropdownMenuItem<String>(
+          value: value,
+          child: Text(value),
+        );
+      }).toList(),
     );
   }
 }

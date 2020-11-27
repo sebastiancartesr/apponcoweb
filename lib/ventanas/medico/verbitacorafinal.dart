@@ -6,9 +6,16 @@ import 'package:demo1/controllers/usuario.dart';
 import 'package:demo1/controllers/bitacoraController.dart';
 import 'package:demo1/controllers/auxpaciente.dart';
 
-class VerPacienteweb extends StatelessWidget {
 
-  final Usuario _usuario = new Usuario();
+class VerPacientedos extends StatefulWidget {
+  VerPacientedos({Key key}) : super(key: key);
+
+  @override
+  _VerPacientedosState createState() => _VerPacientedosState();
+}
+
+class _VerPacientedosState extends State<VerPacientedos> {
+    final Usuario _usuario = new Usuario();
      
     Future<List> getData() async {
     final response = await http.post("http://192.168.1.108/demo1/verpacientes.php", body:{
@@ -52,8 +59,8 @@ class ItemList extends StatelessWidget {
             onTap: () => Navigator.of(context).push(            
                   new MaterialPageRoute(                                 
                       builder: (BuildContext context) => new ElegirFecha(
-                           list: list,
-                            index: i,
+                           lista: list,
+                            aux: i,
                           )),
                 ),
             child: new Card(
@@ -79,13 +86,13 @@ class ItemList extends StatelessWidget {
     );
   }
 }
-//----------------------------------------------------------
-class ElegirFecha extends StatefulWidget {
-  List list;
-  int index;
-  
-  ElegirFecha({this.index,this.list});
 
+
+class ElegirFecha extends StatefulWidget {
+    List lista;
+    int aux;
+  
+  ElegirFecha({this.aux,this.lista});
   @override
   _ElegirFecha createState() => _ElegirFecha();
 }
@@ -94,9 +101,8 @@ class _ElegirFecha extends State<ElegirFecha> {
 
   final BitacoraController _bitacora= new BitacoraController();
   final Paciente _paciente = new Paciente();
-
-  String user='';
   String mensaje='';
+  String user='';
   DateTime _dateTime= DateTime.now();
  // DateTime _dateTimeFin;
   String _splitter(String _sfecha) {
@@ -112,55 +118,29 @@ class _ElegirFecha extends State<ElegirFecha> {
       print(e);
     }
   }
-  Future <List> verbitacora() async{
+  Future <List> verBitacora() async{
       
       final response = await http.post("http://192.168.1.108/demo1/verbitacora.php", body:{
-      "IdPaciente":_paciente.idd,
+      "IdPaciente":widget.lista[widget.aux]['IdPaciente'],
       "DataIni":_splitter(_dateTime.toString()),
-      //"DataFin":_dateTimeFin.toString(),
       });
       var datauser = json.decode(response.body);
 
       if(datauser.length == 0){
-        print(_dateTime.toString());
+
         setState(() {
           mensaje="No se han ingresado bitacoras ese dia";});
       }else{
+          setState(() {
+            _paciente.idd=widget.lista[widget.aux]['IdPaciente'];
+            _bitacora.fechaaux= _splitter(_dateTime.toString());});
         
-       
-        setState(() {
-          String nauseas=datauser[0]['Nauseas'];
-          _bitacora.nauseas= nauseas;
-          String vomito=datauser[0]['Vomitos'];
-          _bitacora.vomito= vomito;
-          String diarrea=datauser[0]['Diarrea'];
-          _bitacora.diarrea= diarrea;
-          String constipacion=datauser[0]['Constipacion'];
-          _bitacora.constipacion= constipacion;
-          String dolor=datauser[0]['Dolor'];
-          _bitacora.dolor= dolor;
-          String fatiga=datauser[0]['Fatiga'];
-          _bitacora.fatiga= fatiga;
-          String perdidaapetito=datauser[0]['PerdidaApetito'];
-          _bitacora.perdidaapetito= perdidaapetito;
-          String fiebre=datauser[0]['Fiebre'];
-          _bitacora.fiebre= fiebre;
-          String sintomaresfrio=datauser[0]['SintomasResfrio'];
-          _bitacora.sintomaresfrio= sintomaresfrio;
-          String sintomasunitarios=datauser[0]['SintomasUnitarios'];
-          _bitacora.sintomasunitarios= sintomasunitarios;
-          String valoricg=datauser[0]['ValorICG'];
-          _bitacora.valoricg= valoricg;
-               
-      }
-      
-      );
-       Navigator.popAndPushNamed(context, '/verbitacoramedico');
+       Navigator.popAndPushNamed(context, '/elegirbitacoramedico');
     }
 
-    return datauser;
+    return json.decode(response.body);
     }
-       Future <List> edit() async{
+           Future <List> edit() async{
     final response = await http.post("http://192.168.1.108/demo1/buscardatospaciente.php", body:{
       "IdPaciente":_paciente.idd,
     });
@@ -173,7 +153,8 @@ class _ElegirFecha extends State<ElegirFecha> {
       setState(() {
           _paciente.clave= datauser[0]['Clave'];
           _paciente.numerodetelefono= datauser[0]['Telefono'];
-          _paciente.direccion= datauser[0]['Direccion'];     
+          _paciente.direccion= datauser[0]['Direccion']; 
+          _paciente.nombre= 'Nombre: ${datauser[0]['PrimerNombre']} ${datauser[0]['PrimerApellido']}';
       });
       Navigator.popAndPushNamed(context, '/editardatos');
 
@@ -187,27 +168,25 @@ class _ElegirFecha extends State<ElegirFecha> {
     return Container( 
       child: Scaffold(
         appBar: AppBar(
-          actions: [
+                    actions: [
     IconButton(
       icon: Icon(Icons.edit),
       onPressed: () {
-        user=_paciente.idd= widget.list[widget.index]['IdPaciente'];
+        user=_paciente.idd= widget.lista[widget.aux]['IdPaciente'];
         edit();
         
       },
     )
   ],
-          
-          title:Text('Seleccionar Fecha'),
+          title:Text('Ver Bitacora'),
         ),
         body: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              //Text(_dateTime == null ? 'No se ha seleccionado una fecha' : _dateTime.toString()),
               Text(_dateTime.toString()== null ? 'No se ha seleccionado una fecha':_splitter(_dateTime.toString()), style: TextStyle(fontSize: 25.0)),
               RaisedButton(
-                child: Text('Pick a date'),
+                child: Text('Seleccionar fecha'),
                 onPressed: () {
                   showDatePicker(
                     context: context,
@@ -220,26 +199,23 @@ class _ElegirFecha extends State<ElegirFecha> {
                       date = _dateTime;
                     }else{
                       setState(() {
-
                       _dateTime = date;
-                      //date = _dateTime;
                     });
 
                     }
                     
                   });
+                
                 },
               ),
                     new RaisedButton( 
-                     child: new Text("ingresar"),
+                     child: new Text("Ingresar"),
                      color: Colors.orangeAccent,
                      shape: new RoundedRectangleBorder(
                        borderRadius: new BorderRadius.circular(30.0)
                      ),
-                     onPressed:(){//widget.list[widget.index]['Titulo']
-                       //user=_paciente.idd= list[i]['IdPaciente']; 
-                       user=_paciente.idd= widget.list[widget.index]['IdPaciente']; 
-                       verbitacora();
+                     onPressed:(){
+                       verBitacora();
                      },
                      ),
                      Text(mensaje,
@@ -251,3 +227,4 @@ class _ElegirFecha extends State<ElegirFecha> {
     );
   }
 }
+
