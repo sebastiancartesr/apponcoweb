@@ -9,7 +9,7 @@ class VerAlertas extends StatelessWidget {
   final Usuario _usuario = new Usuario();
      
     Future<List> getData() async {
-    final response = await http.post("http://192.168.1.108/demo1/veralertapacientes.php", body:{
+    final response = await http.post("http://192.168.42.49/demo1/veralertapacientes.php", body:{
       "IdPersona":_usuario.id.toString(),
     }); 
     return json.decode(response.body);  

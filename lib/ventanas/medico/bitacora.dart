@@ -16,7 +16,7 @@ class _BitacoraState extends State<Bitacora> {
   
   
   void addData() {
-    var url = "http://192.168.1.108/demo1/adbitacora.php";
+    var url = "http://192.168.42.49/demo1/adbitacora.php";
 
     http.post(url, body: {
       "FechaHora": now.toString(),

@@ -72,9 +72,10 @@ class FormScreen5State extends State<FormScreen5> {
       },
     );
   }
+  // Funcion para actualizar los datos personales de los pacientes
       Future <List> actualizardatos() async{
       
-      final response = await http.post("http://192.168.1.108/demo1/editardatospaciente.php", body:{
+      final response = await http.post("http://192.168.42.49/demo1/editardatospaciente.php", body:{
       "Telefono":_phoneNumber,
       "Clave":_password,
       "Direccion":_direccion,

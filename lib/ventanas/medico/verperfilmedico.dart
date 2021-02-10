@@ -23,7 +23,7 @@ class _VerPerfilmedicoState extends State<VerPerfilmedico> {
   String mensaje='';
     Future <List> editardatosmedico() async{
       
-      final response = await http.post("http://192.168.1.108/demo1/editdatamedico.php", body:{
+      final response = await http.post("http://192.168.42.49/demo1/editdatamedico.php", body:{
       "Telefono":controllerPhone.text,
       "Clave":controllerPass.text,
       "IdPersona":_usuario.id.toString(),

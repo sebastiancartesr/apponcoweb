@@ -97,7 +97,8 @@ class _MenuAdminState extends State<MenuAdmin> {
             ListTile(
               
               title: Text('Cerrar sesion'),
-              onTap: (){               
+              onTap: (){
+                Navigator.popAndPushNamed(context, '/loginmedico');               
               }, 
             ),
           ]

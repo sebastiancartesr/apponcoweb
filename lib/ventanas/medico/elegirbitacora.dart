@@ -17,7 +17,7 @@ class _ElegirBitacoramedicoState extends State<ElegirBitacoramedico> {
      
   Future <List> verBitacoras() async{
       
-      final response = await http.post("http://192.168.1.108/demo1/verbitacora.php", body:{
+      final response = await http.post("http://192.168.42.49/demo1/verbitacora.php", body:{
       "IdPaciente":_paciente.idd,
       "DataIni":_bitacora.fechaaux,
       });

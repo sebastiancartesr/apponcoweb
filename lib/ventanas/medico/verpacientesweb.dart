@@ -11,7 +11,7 @@ class VerPacienteweb extends StatelessWidget {
   final Usuario _usuario = new Usuario();
      
     Future<List> getData() async {
-    final response = await http.post("http://192.168.1.108/demo1/verpacientes.php", body:{
+    final response = await http.post("http://192.168.42.49/demo1/verpacientes.php", body:{
       "IdMedico":_usuario.id.toString(),
     }); 
     return json.decode(response.body);  
@@ -114,7 +114,7 @@ class _ElegirFecha extends State<ElegirFecha> {
   }
   Future <List> verbitacora() async{
       
-      final response = await http.post("http://192.168.1.108/demo1/verbitacora.php", body:{
+      final response = await http.post("http://192.168.42.49/demo1/verbitacora.php", body:{
       "IdPaciente":_paciente.idd,
       "DataIni":_splitter(_dateTime.toString()),
       //"DataFin":_dateTimeFin.toString(),
@@ -161,7 +161,7 @@ class _ElegirFecha extends State<ElegirFecha> {
     return datauser;
     }
        Future <List> edit() async{
-    final response = await http.post("http://192.168.1.108/demo1/buscardatospaciente.php", body:{
+    final response = await http.post("http://192.168.42.49/demo1/buscardatospaciente.php", body:{
       "IdPaciente":_paciente.idd,
     });
     var datauser = json.decode(response.body);
