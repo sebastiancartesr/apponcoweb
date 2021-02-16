@@ -184,7 +184,7 @@ class FormScreenState extends State<FormScreen> {
     String _idmedico=_usuario.idMedico;
 // Funcion para agregar pacientes.
     void addPaciente() {
-      var url = "http://192.168.42.49/demo1/agregarpaciente.php";
+      var url = "http://192.168.1.30/demo1/agregarpaciente.php";
 
       http.post(url, body: {
         "Rut": _rut,

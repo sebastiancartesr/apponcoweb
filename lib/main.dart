@@ -1,5 +1,7 @@
 import 'package:demo1/controllers/provider.dart';
 import 'package:demo1/ventanas/medico/menutrabajador.dart';
+import 'package:demo1/ventanas/medico/nuevaventanapaciente.dart';
+import 'package:demo1/ventanas/medico/veralertaspacientes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:demo1/ventanas/medico/verbitacora.dart';
@@ -18,7 +20,8 @@ import 'package:demo1/ventanas/medico/editardatosp.dart';
 import 'package:demo1/ventanas/medico/elegirbitacora.dart';
 import 'package:demo1/ventanas/medico/verbitacorafinal.dart';
 import 'package:demo1/controllers/login_bloc.dart';
-
+import 'package:demo1/ventanas/medico/perfilprueba.dart';
+import 'package:demo1/ventanas/medico/calendario.dart';
 
 void main() => runApp(MyApp());
 
@@ -42,7 +45,10 @@ class MyApp extends StatelessWidget{
           "/editardatos":(BuildContext context) =>FormScreen5(),
           "/elegirbitacoramedico":(BuildContext context) =>ElegirBitacoramedico(),
           "/verpacientesdos":(BuildContext context) =>VerPacientedos(),
-          
+          "/verpacientestres":(BuildContext context) =>VerPacientetres(),
+         // "/perfilprueba":(BuildContext context) =>Perfil(),
+          "/calendario":(BuildContext context) =>CalendarPage2(),
+          "/verunaalerta":(BuildContext context) =>VerAlertasPaciente(),
         }
         ,
         home: LoginPage()
@@ -63,7 +69,7 @@ class _LoginPageState extends State<LoginPage> {
 
     Future <List> _login(LoginBloc bloc) async{
     //final response = await http.post("http://192.168.1.108/demo1/loginfuncionario.php", body:{
-      final response = await http.post("http://192.168.42.49/demo1/loginfuncionario.php", body:{
+      final response = await http.post("http://192.168.1.30/demo1/loginfuncionario.php", body:{
       "Correo":bloc.email,
       "clave":bloc.clave,
     });
@@ -81,11 +87,6 @@ class _LoginPageState extends State<LoginPage> {
           child: Text('Aceptar'))
         ],),
       ); 
-
-
-      /*
-      setState(() {
-        mensaje="usuario o contraseña incorrecta";});*/
       
     }else{
       Navigator.popAndPushNamed(context, '/menutrabajador');

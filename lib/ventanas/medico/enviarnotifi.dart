@@ -11,7 +11,7 @@ class EnviarNotificacion extends StatelessWidget {
   final Usuario _usuario = new Usuario();
      
     Future<List> getData() async {
-    final response = await http.post("http://192.168.42.49/demo1/verpacientes.php", body:{
+    final response = await http.post("http://192.168.1.30/demo1/verpacientes.php", body:{
       "IdMedico":_usuario.id.toString(),
     }); 
     return json.decode(response.body);  
@@ -96,7 +96,7 @@ class _EnviarNotifi extends State<EnviarNotifi> {
   TextEditingController mensaje = new TextEditingController();
   DateTime now= new DateTime.now();
     void enviaralertaphp() {
-    var url = "http://192.168.42.49/demo1/adalerta.php";
+    var url = "http://192.168.1.30/demo1/adalerta.php";
 
     http.post(url, body: {
       "TipoNotificacion": '1',
@@ -229,7 +229,7 @@ class FormScreennotifiState extends State<FormScreennotifi> {
   }
   //Funcion enviar notificacion personalizada
     void enviaralertaphp() {
-    var url = "http://192.168.42.49/demo1/adalerta.php";
+    var url = "http://192.168.1.30/demo1/adalerta.php";
 
     http.post(url, body: {
       "TipoNotificacion": '1',

@@ -80,9 +80,11 @@ class _MenuTrabajadorState extends State<MenuTrabajador> {
             ),
             ListTile(
               title: Text('Lista Paciente'),
-              onTap: (){  
-                _onSelect(2);             
-              },
+              //onTap: (){   _onSelect(2);             },
+                onTap: (){ 
+                Navigator.popAndPushNamed(context, '/verpacientestres');
+                
+              }, 
             ),
             ListTile(
               leading: Icon(Icons.message),
@@ -94,6 +96,7 @@ class _MenuTrabajadorState extends State<MenuTrabajador> {
                 _onSelect(3);           
               },
             ),
+            /*
             ListTile(
               title: Text('Enviar Notificaciones  '),
               onTap: (){    
@@ -109,7 +112,7 @@ class _MenuTrabajadorState extends State<MenuTrabajador> {
               onTap: (){ 
                    _onSelect(4);           
               },           
-            ),  
+            ),  */
             ListTile(
               leading: Icon(Icons.account_circle),
               title: Text('Perfil'),
@@ -128,6 +131,7 @@ class _MenuTrabajadorState extends State<MenuTrabajador> {
                 Navigator.popAndPushNamed(context, '/loginmedico');
               }, 
             ),
+
           ]
         )
       ),

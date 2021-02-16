@@ -1,22 +1,31 @@
+import 'package:demo1/controllers/auxpaciente.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:async';
 import 'dart:convert';
-import 'package:demo1/controllers/usuario.dart';
 
-
-class VerAlertas extends StatelessWidget {//192.168.1.30
-  final Usuario _usuario = new Usuario();
+class VerAlertasPaciente extends StatelessWidget {
+  final Paciente _paciente = new Paciente();
      
     Future<List> getData() async {
-    final response = await http.post("http://192.168.1.30/demo1/veralertapacientes.php", body:{
-      "IdPersona":_usuario.id.toString(),
+    final response = await http.post("http://192.168.1.30/demo1/veralertaunpaciente.php", body:{
+      "IdPaciente":_paciente.idd,
     }); 
+    print(_paciente.idd);
+    var datauser = json.decode(response.body);
+    print(datauser);
     return json.decode(response.body);  
   }
   @override
-  Widget build(BuildContext context) {  
+  Widget build(BuildContext context) {
     return new Scaffold(
+              appBar: AppBar(
+          title: Text('Alertas de ${_paciente.nombre}'),
+          leading: new IconButton(
+            icon: new Icon(Icons.arrow_back_sharp),
+            onPressed: () => Navigator.of(context).pop(),
+          ),
+        ),
  
       body: new FutureBuilder<List>(
         future: getData(),
@@ -57,7 +66,7 @@ class ItemList extends StatelessWidget {
             child: new Card(
               child: new ListTile(
                 title: new Text(
-                  "Paciente: ${list[i]['PrimerNombre']} ${list[i]['PrimerApellido']}",
+                  "Alerta: ${list[i]['Mensaje']}",
                   style: TextStyle(fontSize: 25.0, color: Colors.orangeAccent),
                 ),
                 leading: new Icon(
@@ -88,12 +97,12 @@ class Detail extends StatefulWidget {
 }
 
 class _DetailState extends State<Detail> {
-  final Usuario _usuario = new Usuario();
+  final Paciente _paciente = new Paciente();
 
 
   @override
   Widget build(BuildContext context) {
-    String nombre= _usuario.nombre;
+    //String nombre= _usuario.nombre;
     return new Scaffold(
       appBar: new AppBar(title: new Text("${widget.list[widget.index]['Titulo']}")),
       body: new Container(
@@ -109,6 +118,7 @@ class _DetailState extends State<Detail> {
                 Divider(),
                 new Text("${widget.list[widget.index]['Mensaje']}", style: new TextStyle(fontSize: 18.0),),
                 new Padding(padding: const EdgeInsets.only(top: 30.0),),
+                new Text("${widget.list[widget.index]['FechaNotificacion']}", style: new TextStyle(fontSize: 18.0),),
 
                 new Row(
                   mainAxisSize: MainAxisSize.min,

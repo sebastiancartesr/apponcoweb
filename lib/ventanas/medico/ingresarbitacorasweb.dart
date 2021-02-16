@@ -11,7 +11,7 @@ class Ingresarbitacora extends StatelessWidget {
   final Usuario _usuario = new Usuario();
      
     Future<List> getData() async {
-    final response = await http.post("http://192.168.42.49/demo1/verpacientes.php", body:{
+    final response = await http.post("http://192.168.1.30/demo1/verpacientes.php", body:{
       "IdMedico":_usuario.id.toString(),
     }); 
     return json.decode(response.body);  
@@ -116,7 +116,7 @@ class _ElegirFecha extends State<ElegirFecha> {
 /*
     Future <List> regbitacora() async{
       
-      final response = await http.post("http://192.168.42.49/demo1/regbitacora.php", body:{
+      final response = await http.post("http://192.168.1.30/demo1/regbitacora.php", body:{
       "IdPaciente":_paciente.idd,
       "DataIni":_splitter(_paciente.fechabitacora),
       });
@@ -146,7 +146,7 @@ class _ElegirFecha extends State<ElegirFecha> {
     }*/
       Future <List> regbitacora() async{
       
-      final response = await http.post("http://192.168.42.49/demo1/regbitacora.php", body:{
+      final response = await http.post("http://192.168.1.30/demo1/regbitacora.php", body:{
       "IdPaciente":_paciente.idd,
       "DataIni":_splitter(_paciente.fechabitacora),
       });
@@ -238,20 +238,20 @@ class _ElegirFecha extends State<ElegirFecha> {
 }
 
 //---------------------------------------------------------------------------------------------------------------
-class Bitacora extends StatefulWidget {
-  Bitacora({Key key}) : super(key: key);
+class Bitacora2 extends StatefulWidget {
+  Bitacora2({Key key}) : super(key: key);
   
 
   @override
-  _BitacoraState createState() => _BitacoraState();
+  _Bitacora2State createState() => _Bitacora2State();
 }
 
-class _BitacoraState extends State<Bitacora> {
+class _Bitacora2State extends State<Bitacora2> {
   
   
   
   void addData() {
-    var url = "http://192.168.42.49/demo1/adbitacora.php";
+    var url = "http://192.168.1.30/demo1/adbitacora.php";
 
     http.post(url, body: {
       "FechaHora": _paciente.fechabitacora,

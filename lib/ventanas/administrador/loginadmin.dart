@@ -19,7 +19,7 @@ class _LoginadminState extends State<Loginadmin> {
   String mensaje = '';
      Future <List> login() async{
       
-      final response = await http.post("http://192.168.42.49/demo1/loginadmin.php", body:{
+      final response = await http.post("http://192.168.1.30/demo1/loginadmin.php", body:{
       "Correo":controllerUser.text,
       "clave":controllerPass.text,
       });
@@ -203,7 +203,7 @@ class _LoginadminState extends State<Loginadmin> {
     final Usuario _usuario = new Usuario();
 
     Future <List> _login(LoginBloc bloc) async{
-    final response = await http.post("http://192.168.42.49/demo1/loginadmin.php", body:{
+    final response = await http.post("http://192.168.1.30/demo1/loginadmin.php", body:{
       "Correo":bloc.email,
       "clave":bloc.clave,
     });

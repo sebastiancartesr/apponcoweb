@@ -9,7 +9,7 @@ class VerTrabajadores extends StatelessWidget {
   final Usuario _usuario = new Usuario();
      
     Future<List> getData() async {
-    final response = await http.post("http://192.168.42.49/demo1/vertrabajadores.php", body:{
+    final response = await http.post("http://192.168.1.30/demo1/vertrabajadores.php", body:{
     }); 
     return json.decode(response.body);  
   }
@@ -147,7 +147,7 @@ class _DetailState extends State<Detail> {
   }
       Future <List> actualizardatos() async{
       
-      final response = await http.post("http://192.168.42.49/demo1/editardatostrabajador.php", body:{
+      final response = await http.post("http://192.168.1.30/demo1/editardatostrabajador.php", body:{
       "Telefono":_phoneNumber,
       "Clave":_password,
       "Direccion":_direccion,
