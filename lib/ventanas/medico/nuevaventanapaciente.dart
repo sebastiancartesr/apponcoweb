@@ -19,7 +19,7 @@ class _VerPacientetresState extends State<VerPacientetres> {
 
   Future<List> getData() async {
     final response =
-        await http.post("http://192.168.1.30/demo1/verpacientes.php", body: {
+        await http.post("http://192.168.1.27/demo1/verpacientes.php", body: {
       "IdMedico": _usuario.id.toString(),
     });
     return json.decode(response.body);
@@ -118,9 +118,26 @@ class _PerfilState extends State<Perfil> {
     //print('duda');
     print(_semana);
 
-    VerBitacorasemana();
+    
+    CalcularAlertas();
   }
-
+   Future<List> CalcularAlertas() async {
+    final response = await http
+        .post("http://192.168.1.27/demo1/calcularalertas.php", body: {
+      "IdPaciente": widget.listaa[widget.auxx]['IdPaciente'],
+      //"DataIni": _splitter(_auxcalendar.tiempoxd.toString()),
+      "DataIni": _splitter(_auxcalendar.listadias[6].toString()),
+      "DataFin": _splitter(_auxcalendar.listadias[0].toString()),
+    }); 
+     var datauser = json.decode(response.body);
+     print('alertas');
+     print(datauser);
+     setState(() {
+       _auxcalendar.alertast=datauser.length;
+     });
+     print(datauser.length);
+     VerBitacorasemana();
+    }
 //----------------------------------------------
   String _splitter(String _sfecha) {
     try {
@@ -157,7 +174,7 @@ class _PerfilState extends State<Perfil> {
 //----------------------------------------------
       Future <List> _actualizardatos() async{
       
-      final response = await http.post("http://192.168.1.30/demo1/editardatospaciente.php", body:{
+      final response = await http.post("http://192.168.1.27/demo1/editardatospaciente.php", body:{
       "Telefono":_phoneNumber,
       "Clave":_password,
       "Direccion":_direcciooon,
@@ -169,7 +186,7 @@ class _PerfilState extends State<Perfil> {
 
   Future<List> VerBitacorasemana() async {
     final response = await http
-        .post("http://192.168.1.30/demo1/verbitacorasemana.php", body: {
+        .post("http://192.168.1.27/demo1/verbitacorasemana.php", body: {
       "IdPaciente": widget.listaa[widget.auxx]['IdPaciente'],
       //"DataIni": _splitter(_auxcalendar.tiempoxd.toString()),
       "DataIni": _splitter(_auxcalendar.listadias[6].toString()),
@@ -180,6 +197,9 @@ class _PerfilState extends State<Perfil> {
     print('no seeeeeeeeee');
     print(datauser);
     print('salir del rest');
+    setState(() {
+      _auxcalendar.bitacorast=datauser.length;
+    });
     //-------------------------------------------------------------------------------------------------
     for (int i = 0; i < datauser.length; i++) {
       if (_splitter(datauser[i]['FechaHora']) ==
@@ -718,9 +738,9 @@ class _ElegirFecha extends State<ElegirFecha> {
   }
 
   Future<List> verBitacora() async {
-    // final response = await http.post("http://192.168.1.30/demo1/verbitacora.php", body:{
+    // final response = await http.post("http://192.168.1.27/demo1/verbitacora.php", body:{
     final response =
-        await http.post("http://192.168.1.30/demo1/verbitacora.php", body: {
+        await http.post("http://192.168.1.27/demo1/verbitacora.php", body: {
       "IdPaciente": widget.lista2[widget.auxx2]['IdPaciente'],
       "DataIni": _splitter(_dateTime.toString()),
     });
@@ -745,7 +765,7 @@ class _ElegirFecha extends State<ElegirFecha> {
 
   Future<List> edit() async {
     final response = await http
-        .post("http://192.168.1.30/demo1/buscardatospaciente.php", body: {
+        .post("http://192.168.1.27/demo1/buscardatospaciente.php", body: {
       "IdPaciente": _paciente.idd,
     });
     var datauser = json.decode(response.body);
@@ -904,7 +924,7 @@ class FormScreennotifiState extends State<FormScreennotifi> {
   }
   //Funcion enviar notificacion personalizada
     void enviaralertaphp() {
-    var url = "http://192.168.1.30/demo1/adalerta.php";
+    var url = "http://192.168.1.27/demo1/adalerta.php";
 
     http.post(url, body: {
       "TipoNotificacion": '1',
@@ -994,7 +1014,7 @@ class _ElegirFechav2 extends State<ElegirFechav2> {
 
       Future <List> regbitacora() async{
       
-      final response = await http.post("http://192.168.1.30/demo1/regbitacora.php", body:{
+      final response = await http.post("http://192.168.1.27/demo1/regbitacora.php", body:{
       "IdPaciente":_paciente.idd,
       "DataIni":_splitter(_paciente.fechabitacora),
       });
@@ -1099,7 +1119,7 @@ class _BitacoraState extends State<Bitacora> {
   
   
   void addData() {
-    var url = "http://192.168.1.30/demo1/adbitacora.php";
+    var url = "http://192.168.1.27/demo1/adbitacora.php";
 
     http.post(url, body: {
       "FechaHora": _paciente.fechabitacora,

@@ -22,7 +22,7 @@ class _MenuAdminState extends State<MenuAdmin> {
   int _selectDrawer = 0;
   _getDrawer(int pos){
     switch(pos){
-      case 0: return Bienvenido();
+      case 0: return Dashboard();
       case 2: return VerTrabajadores();
       
       

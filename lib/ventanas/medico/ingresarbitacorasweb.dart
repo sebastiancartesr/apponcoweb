@@ -11,7 +11,7 @@ class Ingresarbitacora extends StatelessWidget {
   final Usuario _usuario = new Usuario();
      
     Future<List> getData() async {
-    final response = await http.post("http://192.168.1.30/demo1/verpacientes.php", body:{
+    final response = await http.post("http://192.168.1.27/demo1/verpacientes.php", body:{
       "IdMedico":_usuario.id.toString(),
     }); 
     return json.decode(response.body);  
@@ -116,7 +116,7 @@ class _ElegirFecha extends State<ElegirFecha> {
 /*
     Future <List> regbitacora() async{
       
-      final response = await http.post("http://192.168.1.30/demo1/regbitacora.php", body:{
+      final response = await http.post("http://192.168.1.27/demo1/regbitacora.php", body:{
       "IdPaciente":_paciente.idd,
       "DataIni":_splitter(_paciente.fechabitacora),
       });
@@ -146,7 +146,7 @@ class _ElegirFecha extends State<ElegirFecha> {
     }*/
       Future <List> regbitacora() async{
       
-      final response = await http.post("http://192.168.1.30/demo1/regbitacora.php", body:{
+      final response = await http.post("http://192.168.1.27/demo1/regbitacora.php", body:{
       "IdPaciente":_paciente.idd,
       "DataIni":_splitter(_paciente.fechabitacora),
       });
@@ -251,7 +251,7 @@ class _Bitacora2State extends State<Bitacora2> {
   
   
   void addData() {
-    var url = "http://192.168.1.30/demo1/adbitacora.php";
+    var url = "http://192.168.1.27/demo1/adbitacora.php";
 
     http.post(url, body: {
       "FechaHora": _paciente.fechabitacora,

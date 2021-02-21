@@ -192,7 +192,7 @@ class FormScreen2State extends State<FormScreen2> {
     String _centro=_usuario.centro;
 //--------------------------------------------------------------------------
     void addTrabajador(){
-      var url = "http://192.168.1.30/demo1/creartrabajador.php";
+      var url = "http://192.168.1.27/demo1/creartrabajador.php";
       http.post(url, body: {
         "IdPersona": _persona.iddd,
         "IdRol": _persona.idrol,
@@ -207,7 +207,7 @@ class FormScreen2State extends State<FormScreen2> {
 
 //----------------------------------------------------------------------------
   Future <List> getidrol() async{
-    final response = await http.post("http://192.168.1.30/demo1/idrol.php", body:{
+    final response = await http.post("http://192.168.1.27/demo1/idrol.php", body:{
       "NombreRol":_persona.rol,
     });
     var datauser = json.decode(response.body);
@@ -232,7 +232,7 @@ class FormScreen2State extends State<FormScreen2> {
 //-----idpersona agregada no se tiene
 
    Future <List> getid() async{
-    final response = await http.post("http://192.168.1.30/demo1/buscarid.php", body:{
+    final response = await http.post("http://192.168.1.27/demo1/buscarid.php", body:{
       "Correo":_email,
     });
     var datauser = json.decode(response.body);
@@ -255,7 +255,7 @@ class FormScreen2State extends State<FormScreen2> {
 
 
     void addMedico() {
-      var url = "http://192.168.1.30/demo1/agregarpersona.php";
+      var url = "http://192.168.1.27/demo1/agregarpersona.php";
 
       http.post(url, body: {
         "Rut": _rut,
@@ -278,7 +278,7 @@ class FormScreen2State extends State<FormScreen2> {
   //validar rut
        Future <List> verificardatos() async{
       
-      final response = await http.post("http://192.168.1.30/demo1/verdatospersona.php", body:{
+      final response = await http.post("http://192.168.1.27/demo1/verdatospersona.php", body:{
       "Correo":_email,
       "Rut":_rut,
       });

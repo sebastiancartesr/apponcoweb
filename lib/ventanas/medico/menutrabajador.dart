@@ -23,7 +23,7 @@ class _MenuTrabajadorState extends State<MenuTrabajador> {
   int _selectDrawer = 0;
   _getDrawer(int pos){
     switch(pos){
-      case 0: return Bienvenido();
+      case 0: return Dashboard();
       case 1: return VerBitacoramedicoweb();
       //case 2: return VerPacienteweb();
       case 2: return VerPacientedos();
@@ -43,7 +43,7 @@ class _MenuTrabajadorState extends State<MenuTrabajador> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("AppOnco"),
+        title: Center(child: Text("AppOnco",style: TextStyle(letterSpacing: 1.2)),),
       ),
       drawer: Drawer(
         child: ListView(
@@ -91,7 +91,7 @@ class _MenuTrabajadorState extends State<MenuTrabajador> {
               title: Text('Notificaciones'),
             ),
             ListTile(
-              title: Text('Ver Alertas'),
+              title: Text('Ver alertas de riesgo'),
               onTap: (){ 
                 _onSelect(3);           
               },

@@ -39,4 +39,11 @@ class CalendarioAux {
   bool get dia7 => _dia7;
   set dia7(bool value) => _dia7 = value;
   //
+  int _bitacorast;
+  int get bitacorast => _bitacorast;
+  set bitacorast(int value) => _bitacorast = value;
+    //
+  int _alertast;
+  int get alertast => _alertast;
+  set alertast(int value) => _alertast = value;
 }

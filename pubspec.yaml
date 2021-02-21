@@ -20,6 +20,7 @@ dependencies:
   flutter_calendar_carousel: ^1.5.3
   http: any
   rxdart: ^0.25.0
+  pie_chart: ^3.1.1
 
 dev_dependencies:
   flutter_test:

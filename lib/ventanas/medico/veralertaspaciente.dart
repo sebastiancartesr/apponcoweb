@@ -5,11 +5,11 @@ import 'dart:convert';
 import 'package:demo1/controllers/usuario.dart';
 
 
-class VerAlertas extends StatelessWidget {//192.168.1.30
+class VerAlertas extends StatelessWidget {//192.168.1.27
   final Usuario _usuario = new Usuario();
      
     Future<List> getData() async {
-    final response = await http.post("http://192.168.1.30/demo1/veralertapacientes.php", body:{
+    final response = await http.post("http://192.168.1.27/demo1/veralertapacientes.php", body:{
       "IdPersona":_usuario.id.toString(),
     }); 
     return json.decode(response.body);  
@@ -61,14 +61,17 @@ class ItemList extends StatelessWidget {
                   style: TextStyle(fontSize: 25.0, color: Colors.orangeAccent),
                 ),
                 leading: new Icon(
-                  Icons.messenger_outline_sharp,
+                  Icons.assignment_late_outlined,
                   size: 55.0,
                   color: Colors.orangeAccent,
                 ),
                 subtitle: new Text(
-                  "Fecha: ${list[i]['FechaNotificacion']}",
+                  "Rut: ${list[i]['Rut']} \nFecha: ${list[i]['FechaNotificacion']}",
                   style: TextStyle(fontSize: 20.0, color: Colors.black),
                 ),
+                isThreeLine: true,
+                
+
               ),
             ),
           ),

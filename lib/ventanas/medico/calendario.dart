@@ -41,7 +41,7 @@ class _CalendarPage2State extends State<CalendarPage2> {
 
   Future<List> VerBitacorasemana() async {
     final response = await http
-        .post("http://192.168.1.30/demo1/verbitacorasemana.php", body: {
+        .post("http://192.168.1.27/demo1/verbitacorasemana.php", body: {
       "IdPaciente": '112',
       "DataIni": '2021/02/01',
       "DataFin": '2021/02/07',
@@ -279,7 +279,7 @@ class _CalendarPage2State extends State<CalendarPage2> {
 
     return new Scaffold(
       appBar: new AppBar(
-        title: new Text("Calender"),
+        title: new Text("Calenderio de bitacoras"),
       ),
       body: Center(
         child: Container(
@@ -289,10 +289,48 @@ class _CalendarPage2State extends State<CalendarPage2> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
-
                 _calendarCarouselNoHeader,
                 markerRepresent(Colors.red, "Sin Registro"),
                 markerRepresent(Colors.green, "Registrado"),
+                SizedBox(height: 20.0),
+                SizedBox(
+                  child: Container(
+                    decoration: BoxDecoration(
+                      //border: Border.all(color: Colors.black)
+                      ),
+                                height: MediaQuery.of(context).size.height * .10,
+          width: MediaQuery.of(context).size.height * .60,
+                      //child:Text('  Esta semana se han registrado un total de ${_auxcalendar.bitacorast} Bitacoras  \n \n Esta semana se han registrado un total de ${_auxcalendar.alertast} alertas ',style: TextStyle(color: Colors.black, fontSize: 20.0),),
+                      child:                     Table(
+                    border: TableBorder.all(),
+                    columnWidths: {
+                    0:FractionColumnWidth(.15),
+                    1:FractionColumnWidth(.15),
+
+                    },
+                
+              
+              children: [            
+                TableRow(children: [
+                  TableCell(child: Container (//color: Colors.green[300],
+                   child: Center(child: Text('Bitacoras últimos 7 días',style: TextStyle(color: Colors.black,fontSize: 25),))),),
+                  TableCell(child: Container (//color: Colors.purple[300],
+                   child: Center(child: Text('${_auxcalendar.bitacorast}',style: TextStyle(color: Colors.black,fontSize: 25),))),),
+           
+                ]),
+                TableRow(children: [
+                  TableCell(
+                    child: Center(child: Text('Alertas últimos 7 días',style: TextStyle(color: Colors.black,fontSize: 25),)),
+                    verticalAlignment: TableCellVerticalAlignment.bottom,
+                  ),
+                  TableCell(
+                    verticalAlignment: TableCellVerticalAlignment.middle,
+                    child: Center(child: Text('${_auxcalendar.alertast}',style: TextStyle(color: Colors.black,fontSize: 25),)),
+                  ),
+            ]),
+            ],), 
+                      ),
+                  ),
               ],
             ),
           ),

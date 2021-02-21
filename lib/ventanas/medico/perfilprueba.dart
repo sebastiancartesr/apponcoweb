@@ -54,7 +54,7 @@ class _PerfilState extends State<Perfil> {
 
   Future<List> VerBitacorasemana() async {
     final response = await http
-        .post("http://192.168.1.30/demo1/verbitacorasemana.php", body: {
+        .post("http://192.168.1.27/demo1/verbitacorasemana.php", body: {
       "IdPaciente": '112',
       //"DataIni": _splitter(_auxcalendar.tiempoxd.toString()),
       "DataIni": '2021/02/01',
