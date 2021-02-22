@@ -2,7 +2,149 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:async';
 import 'dart:convert';
-import 'package:pie_chart/pie_chart.dart';
+import 'package:demo1/ventanas/medico/nuevaventanapaciente.dart';
+
+Widget _getHeader(context) {
+  if (MediaQuery.of(context).size.width <= 600) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: <Widget>[
+        Container(
+          padding: EdgeInsets.symmetric(horizontal: 10.0),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(25.0),
+            color: Colors.white,
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Container(
+                margin: EdgeInsets.symmetric(horizontal: 20.0),
+                child: RaisedButton(
+                  child: Text(
+                    "Hoy",
+                    style: TextStyle(
+                      color: Colors.white,
+                    ),
+                  ),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20.0)),
+                  color: Colors.blue[900],
+                  onPressed: () {},
+                ),
+              ),
+              RaisedButton(
+                child: Text(
+                  "Semana",
+                  style: TextStyle(
+                    color: Colors.white,
+                  ),
+                ),
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20.0)),
+                color: Colors.blue[900],
+                onPressed: () {},
+              ),
+              Container(
+                margin: EdgeInsets.symmetric(horizontal: 20.0),
+                child: RaisedButton(
+                  child: Text(
+                    "Mes",
+                    style: TextStyle(
+                      color: Colors.white,
+                    ),
+                  ),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20.0)),
+                  color: Colors.blue[900],
+                  onPressed: () {},
+                ),
+              ),
+            ],
+          ),
+        ),
+        Text(
+              DateTime.now().day.toString() +
+              "/" +
+              DateTime.now().month.toString() +
+              "/" +
+              DateTime.now().year.toString(),
+          textAlign: TextAlign.end,
+          style: TextStyle(letterSpacing: 1.2, fontSize: 20.0),
+        ),
+      ],
+    );
+  } else {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: <Widget>[
+        Container(
+          padding: EdgeInsets.symmetric(horizontal: 10.0),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(25.0),
+            color: Colors.white,
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Container(
+                margin: EdgeInsets.symmetric(horizontal: 20.0),
+                child: RaisedButton(
+                  child: Text(
+                    "Hoy",
+                    style: TextStyle(
+                      color: Colors.white,
+                    ),
+                  ),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20.0)),
+                  color: Colors.blue[900],
+                  onPressed: () {},
+                ),
+              ),
+              RaisedButton(
+                child: Text(
+                  "Semana",
+                  style: TextStyle(
+                    color: Colors.white,
+                  ),
+                ),
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20.0)),
+                color: Colors.blue[900],
+                onPressed: () {},
+              ),
+              Container(
+                margin: EdgeInsets.symmetric(horizontal: 20.0),
+                child: RaisedButton(
+                  child: Text(
+                    "Mes",
+                    style: TextStyle(
+                      color: Colors.white,
+                    ),
+                  ),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20.0)),
+                  color: Colors.blue[900],
+                  onPressed: () {},
+                ),
+              ),
+            ],
+          ),
+        ),
+        Text(
+              DateTime.now().day.toString() +
+              "/" +
+              DateTime.now().month.toString() +
+              "/ " +
+              DateTime.now().year.toString(),
+          textAlign: TextAlign.end,
+          style: TextStyle(letterSpacing: 1.2, fontSize: 20.0),
+        ),
+      ],
+    );
+  }
+}
 
 class Dashboard extends StatefulWidget {
   Dashboard({Key key}) : super(key: key);
@@ -38,10 +180,17 @@ class _DashboardState extends State<Dashboard> {
     return json.decode(response.body);
   }
 
+  Future<List> getData5() async {
+    final response = await http.post("http://192.168.1.27/demo1/contador1.php",
+        body: {"IdMedico": '1', "DataIni": '2021-02-19'});
+    return json.decode(response.body);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
       children: <Widget>[
+        _getHeader(context),
         Expanded(
           child: GridView(
             padding: EdgeInsets.only(top: 20.0),
@@ -52,6 +201,46 @@ class _DashboardState extends State<Dashboard> {
                         ? 2
                         : 1),
             children: <Widget>[
+              Card(
+                margin: EdgeInsets.all(40.0),
+                elevation: 0.0,
+                color: Colors.amber[200],
+                child: Scaffold(
+                  body: new FutureBuilder(
+                    future: getData5(),
+                    builder: (context, snapshot) {
+                      if (snapshot.hasError) print(snapshot.error);
+                      return snapshot.hasData
+                          ? new Pacientesyalertas(
+                              list: snapshot.data,
+                            )
+                          : new Center(
+                              child: new CircularProgressIndicator(),
+                            );
+                    },
+                  ),
+                ),
+              ),
+              Card(
+                margin: EdgeInsets.all(40.0),
+                elevation: 0.0,
+                color: Colors.amber[200],
+                child: Scaffold(
+                  body: new FutureBuilder(
+                    future: getData5(),
+                    builder: (context, snapshot) {
+                      if (snapshot.hasError) print(snapshot.error);
+                      return snapshot.hasData
+                          ? new Gravesy(
+                              list: snapshot.data,
+                            )
+                          : new Center(
+                              child: new CircularProgressIndicator(),
+                            );
+                    },
+                  ),
+                ),
+              ),
               Card(
                 margin: EdgeInsets.all(40.0),
                 elevation: 3.0,
@@ -130,7 +319,7 @@ class _DashboardState extends State<Dashboard> {
                 color: Colors.purple[200],
                 child: Scaffold(
                   appBar: AppBar(
-                    title: Text("Pacientes con mayor nivel de diarrea"),
+                    title: Text("Pacientes con Síndrome diarreico"),
                     automaticallyImplyLeading: false,
                   ),
                   body: new FutureBuilder<List>(
@@ -148,30 +337,6 @@ class _DashboardState extends State<Dashboard> {
                   ),
                 ),
               ),
-              Card(
-                margin: EdgeInsets.all(40.0),
-                elevation: 3.0,
-                color: Colors.brown[200],
-                child: Scaffold(
-                  appBar: AppBar(title: Text("Pacientes sin registros hoy")),
-                  body: Text(
-                    "Tile 1",
-                    style: TextStyle(color: Colors.green[900], fontSize: 30.0),
-                  ),
-                ),
-              ),
-              Card(
-                margin: EdgeInsets.all(40.0),
-                elevation: 3.0,
-                color: Colors.amber[200],
-                child: Scaffold(
-                  appBar: AppBar(title: Text("Pacientes sin registros hoy")),
-                  body: Text(
-                    "Tile 1",
-                    style: TextStyle(color: Colors.green[900], fontSize: 30.0),
-                  ),
-                ),
-              ),
             ],
           ),
         ),
@@ -182,56 +347,9 @@ class _DashboardState extends State<Dashboard> {
 
 //--------------------------------------------------------
 
-class ItemList extends StatelessWidget {
-  final List list;
-  ItemList({this.list});
-  @override
-  Widget build(BuildContext context) {
-    return new ListView.builder(
-      itemCount: list == null ? 0 : list.length,
-      itemBuilder: (context, i) {
-        return new Container(
-          padding: const EdgeInsets.all(10.0),
-          child: new GestureDetector(
-            onTap: () {},
-            /* =>Navigator.of(context).push(
-              new MaterialPageRoute(
-                  builder: (BuildContext context) => new ElegirFecha(
-                        lista: list,
-                        aux: i,
-                      )),
-            ),*/
-            child: new Card(
-              child: new ListTile(
-                title: new Text(
-                  list[i]['PrimerNombre'] + ' ' + list[i]['PrimerApellido'],
-                  style: TextStyle(fontSize: 25.0, color: Colors.orangeAccent),
-                ),
-                leading: new Icon(
-                  Icons.person,
-                  size: 55.0,
-                  color: Colors.orangeAccent,
-                ),
-                subtitle: new Text(
-                  "Rut: ${list[i]['Rut']}",
-                  style: TextStyle(fontSize: 20.0, color: Colors.black),
-                ),
-              ),
-            ),
-          ),
-        );
-      },
-    );
-  }
-}
-
 class DoctorsCardWidget extends StatelessWidget {
   final List list;
   DoctorsCardWidget({this.list});
-  final Map<String, double> dataMa = {
-    "Flutter": 5,
-    "React": 3,
-  };
 
   @override
   Widget build(BuildContext context) {
@@ -243,7 +361,13 @@ class DoctorsCardWidget extends StatelessWidget {
           padding: const EdgeInsets.all(1.0),
           child: FlatButton(
             highlightColor: Colors.white,
-            onPressed: () {},
+            onPressed: () => Navigator.of(context).push(
+              new MaterialPageRoute(
+                  builder: (BuildContext context) => new Perfil(
+                        listaa: list,
+                        auxx: i,
+                      )),
+            ),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(1.0),
             ),
@@ -296,33 +420,6 @@ class DoctorsCardWidget extends StatelessWidget {
                         ],
                       ),
                     ),
-
-                    /*
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    PieChart(
-                      dataMap: dataMa,
-                      showLegends: false,
-                      showChartValues: false,
-                      chartRadius: MediaQuery.of(context).size.width /
-                          6.5, //determines the size of the chart
-                      
-                      chartType:
-                          ChartType.disc, //can be changed to ChartType.ring
-                    ),
-                    Text(
-                      'Bitacoras',
-                      textAlign: TextAlign.left,
-                      style: TextStyle(
-                        fontFamily: 'Poppins',
-                        fontSize: 12.0,
-                        color: this.widget.doctors.color,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ],
-                ),*/
                     SizedBox(width: 20.0),
                     Column(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -362,146 +459,7 @@ class DoctorsCardWidget extends StatelessWidget {
                             ),
                           ],
                         ),
-                        //Text(  '9:30AM - 8:30PM',style: TextStyle(fontFamily: 'Poppins',fontSize: 10.0,fontWeight: FontWeight.bold,),),
                       ],
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ),
-        );
-      },
-    );
-  }
-}
-
-class DoctorsCardWidgetgrafico extends StatelessWidget {
-  final List list;
-  DoctorsCardWidgetgrafico({this.list});
-  int dias = 3;
-
-  final Map<String, double> dataMa = {
-    "total": 3,
-    "React": 3,
-  };
-
-  @override
-  Widget build(BuildContext context) {
-    return new ListView.builder(
-      itemCount: list == null ? 0 : list.length,
-      itemBuilder: (context, i) {
-        return new Container(
-          height: 150.0,
-          padding: const EdgeInsets.all(6.0),
-          child: FlatButton(
-            highlightColor: Colors.white,
-            onPressed: () {},
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(16.0),
-            ),
-            child: Card(
-              elevation: 0.5,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10.0),
-              ),
-              child: Container(
-                decoration: BoxDecoration(
-                  boxShadow: [
-                    BoxShadow(
-                        color: Colors.grey.withOpacity(0.1),
-                        offset: Offset(0, 4),
-                        blurRadius: 10)
-                  ],
-                ),
-                padding: const EdgeInsets.only(
-                    top: 12.0, bottom: 12.0, left: 12.0, right: 12.0),
-                child: Row(
-                  //mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Container(
-                      decoration: BoxDecoration(
-                          border: Border.all(color: Colors.white)),
-                      child: PieChart(
-                        dataMap: dataMa,
-                        showLegends: false,
-                        showChartValues: false,
-                        chartRadius: MediaQuery.of(context).size.width /
-                            20, //determines the size of the chart
-
-                        chartType:
-                            ChartType.disc, //can be changed to ChartType.ring
-                      ),
-                    ),
-                    /*Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    PieChart(
-                      dataMap: dataMa,
-                      showLegends: false,
-                      showChartValues: false,
-                      chartRadius: MediaQuery.of(context).size.width /
-                          20, //determines the size of the chart
-                      
-                      chartType:
-                          ChartType.disc, //can be changed to ChartType.ring
-                    ),
-                    Text(
-                      'Bitacoras',
-                      textAlign: TextAlign.left,
-                      style: TextStyle(
-                        fontFamily: 'Poppins',
-                        fontSize: 12.0,
-                        color: Colors.black,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ],
-                ),*/
-                    SizedBox(width: 10.0),
-                    Container(
-                      //decoration: BoxDecoration(border: Border.all(color: Colors.black)),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              Container(
-                                margin: const EdgeInsets.only(bottom: 10.0),
-                                child: Text(
-                                  list[i]['PrimerNombre'] +
-                                      ' ' +
-                                      list[i]['PrimerApellido'],
-                                  textAlign: TextAlign.left,
-                                  style: TextStyle(
-                                    fontFamily: 'Poppins',
-                                    fontSize: 20.0,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ),
-                              Text(
-                                "Rut: ${list[i]['Rut']}",
-                                style: TextStyle(
-                                    fontFamily: 'Poppins',
-                                    color: Colors.black,
-                                    fontSize: 15.0),
-                              ),
-                              SizedBox(height: 10.0),
-                              Text(
-                                "Edad: ${list[i]['FechaN']} años",
-                                style: TextStyle(
-                                    fontFamily: 'Poppins',
-                                    color: Colors.black,
-                                    fontSize: 15.0),
-                              ),
-                            ],
-                          ),
-                          //Text(  '9:30AM - 8:30PM',style: TextStyle(fontFamily: 'Poppins',fontSize: 10.0,fontWeight: FontWeight.bold,),),
-                        ],
-                      ),
                     ),
                   ],
                 ),
@@ -532,7 +490,13 @@ class CardFiebreMax extends StatelessWidget {
           padding: const EdgeInsets.all(1.0),
           child: FlatButton(
             highlightColor: Colors.white,
-            onPressed: () {},
+            onPressed: () => Navigator.of(context).push(
+              new MaterialPageRoute(
+                  builder: (BuildContext context) => new Perfil(
+                        listaa: list,
+                        auxx: i,
+                      )),
+            ),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(1.0),
             ),
@@ -544,7 +508,6 @@ class CardFiebreMax extends StatelessWidget {
               ),
               child: Container(
                 decoration: BoxDecoration(
-                  //border: Border.all(color: Colors.black),
                   boxShadow: [
                     BoxShadow(
                         color: Colors.grey.withOpacity(0.1),
@@ -555,7 +518,6 @@ class CardFiebreMax extends StatelessWidget {
                 padding: const EdgeInsets.only(
                     top: 20.0, bottom: 12.0, left: 12.0, right: 12.0),
                 child: Row(
-                  //mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
                     Container(
                       margin: EdgeInsets.symmetric(vertical: 20.0),
@@ -585,33 +547,6 @@ class CardFiebreMax extends StatelessWidget {
                         ],
                       ),
                     ),
-
-                    /*
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    PieChart(
-                      dataMap: dataMa,
-                      showLegends: false,
-                      showChartValues: false,
-                      chartRadius: MediaQuery.of(context).size.width /
-                          6.5, //determines the size of the chart
-                      
-                      chartType:
-                          ChartType.disc, //can be changed to ChartType.ring
-                    ),
-                    Text(
-                      'Bitacoras',
-                      textAlign: TextAlign.left,
-                      style: TextStyle(
-                        fontFamily: 'Poppins',
-                        fontSize: 12.0,
-                        color: this.widget.doctors.color,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ],
-                ),*/
                     SizedBox(width: 20.0),
                     Column(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -651,7 +586,6 @@ class CardFiebreMax extends StatelessWidget {
                             ),
                           ],
                         ),
-                        //Text(  '9:30AM - 8:30PM',style: TextStyle(fontFamily: 'Poppins',fontSize: 10.0,fontWeight: FontWeight.bold,),),
                       ],
                     ),
                   ],
@@ -683,7 +617,13 @@ class CardDiarrea extends StatelessWidget {
           padding: const EdgeInsets.all(1.0),
           child: FlatButton(
             highlightColor: Colors.white,
-            onPressed: () {},
+            onPressed: () => Navigator.of(context).push(
+              new MaterialPageRoute(
+                  builder: (BuildContext context) => new Perfil(
+                        listaa: list,
+                        auxx: i,
+                      )),
+            ),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(1.0),
             ),
@@ -736,33 +676,6 @@ class CardDiarrea extends StatelessWidget {
                         ],
                       ),
                     ),
-
-                    /*
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    PieChart(
-                      dataMap: dataMa,
-                      showLegends: false,
-                      showChartValues: false,
-                      chartRadius: MediaQuery.of(context).size.width /
-                          6.5, //determines the size of the chart
-                      
-                      chartType:
-                          ChartType.disc, //can be changed to ChartType.ring
-                    ),
-                    Text(
-                      'Bitacoras',
-                      textAlign: TextAlign.left,
-                      style: TextStyle(
-                        fontFamily: 'Poppins',
-                        fontSize: 12.0,
-                        color: this.widget.doctors.color,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ],
-                ),*/
                     SizedBox(width: 20.0),
                     Column(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -802,7 +715,6 @@ class CardDiarrea extends StatelessWidget {
                             ),
                           ],
                         ),
-                        //Text(  '9:30AM - 8:30PM',style: TextStyle(fontFamily: 'Poppins',fontSize: 10.0,fontWeight: FontWeight.bold,),),
                       ],
                     ),
                   ],
@@ -819,11 +731,6 @@ class CardDiarrea extends StatelessWidget {
 class CardNoBitacora extends StatelessWidget {
   final List list;
   CardNoBitacora({this.list});
-  final Map<String, double> dataMa = {
-    "Flutter": 5,
-    "React": 3,
-  };
-
   @override
   Widget build(BuildContext context) {
     return new ListView.builder(
@@ -834,7 +741,13 @@ class CardNoBitacora extends StatelessWidget {
           padding: const EdgeInsets.all(1.0),
           child: FlatButton(
             highlightColor: Colors.white,
-            onPressed: () {},
+            onPressed: () => Navigator.of(context).push(
+              new MaterialPageRoute(
+                  builder: (BuildContext context) => new Perfil(
+                        listaa: list,
+                        auxx: i,
+                      )),
+            ),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(1.0),
             ),
@@ -862,42 +775,14 @@ class CardNoBitacora extends StatelessWidget {
                     Container(
                       margin: EdgeInsets.symmetric(vertical: 0.0),
                       padding: EdgeInsets.symmetric(horizontal: 20.0),
-                      child:                           Icon(
-                            Icons.person,
-                            color: Colors.black,
-                            size: 80.0,
-                            semanticLabel:
-                                'Text to announce in accessibility modes',
-                          ),
-                      ),
-                    
-
-                    /*
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    PieChart(
-                      dataMap: dataMa,
-                      showLegends: false,
-                      showChartValues: false,
-                      chartRadius: MediaQuery.of(context).size.width /
-                          6.5, //determines the size of the chart
-                      
-                      chartType:
-                          ChartType.disc, //can be changed to ChartType.ring
-                    ),
-                    Text(
-                      'Bitacoras',
-                      textAlign: TextAlign.left,
-                      style: TextStyle(
-                        fontFamily: 'Poppins',
-                        fontSize: 12.0,
-                        color: this.widget.doctors.color,
-                        fontWeight: FontWeight.bold,
+                      child: Icon(
+                        Icons.person,
+                        color: Colors.black,
+                        size: 80.0,
+                        semanticLabel:
+                            'Text to announce in accessibility modes',
                       ),
                     ),
-                  ],
-                ),*/
                     SizedBox(width: 20.0),
                     Column(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -937,7 +822,6 @@ class CardNoBitacora extends StatelessWidget {
                             ),
                           ],
                         ),
-                        //Text(  '9:30AM - 8:30PM',style: TextStyle(fontFamily: 'Poppins',fontSize: 10.0,fontWeight: FontWeight.bold,),),
                       ],
                     ),
                   ],
@@ -948,5 +832,183 @@ class CardNoBitacora extends StatelessWidget {
         );
       },
     );
+  }
+}
+
+class Pacientesyalertas extends StatelessWidget {
+  final List list;
+  Pacientesyalertas({this.list});
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+        margin: EdgeInsets.all(40.0),
+        elevation: 0.0,
+        child: Column(children: <Widget>[
+          Card(
+              margin: EdgeInsets.only(top: 0),
+              elevation: 3.0,
+              color: Colors.red[600],
+              child: SizedBox(
+                  height: 200,
+                  width: 440,
+                  child: Row(mainAxisSize: MainAxisSize.max, children: <Widget>[
+                    Card(
+                      color: Colors.red[600],
+                      margin: EdgeInsets.only(
+                          top: 40, bottom: 40, left: 60, right: 40),
+                      elevation: 0.0,
+                      child: Icon(
+                        Icons.supervised_user_circle_sharp,
+                        size: 100.0,
+                        color: Colors.white,
+                      ),
+                    ),
+                    Card(
+                      color: Colors.red[600],
+                      margin: EdgeInsets.only(
+                          top: 40, bottom: 40, left: 50, right: 90),
+                      elevation: 0.0,
+                      child: Column(
+                        children: [
+                          Text('Pacientes',
+                              style: TextStyle(
+                                  fontSize: 20.0, color: Colors.white)),
+                          Text('${list[0]['CountPaciente']}',
+                              style: TextStyle(
+                                  fontSize: 60.0, color: Colors.white)),
+                        ],
+                      ),
+                    ),
+                  ]))),
+          SizedBox(
+            height: 40,
+            //width: 300,
+          ),
+          Card(
+              margin: EdgeInsets.only(top: 20),
+              elevation: 3.0,
+              color: Colors.red[600],
+              child: SizedBox(
+                  height: 200,
+                  width: 440,
+                  child: Row(mainAxisSize: MainAxisSize.max, children: <Widget>[
+                    Card(
+                      color: Colors.red[600],
+                      margin: EdgeInsets.only(
+                          top: 40, bottom: 40, left: 60, right: 40),
+                      elevation: 0.0,
+                      child: Icon(
+                        Icons.assignment_late,
+                        size: 100.0,
+                        color: Colors.white,
+                      ),
+                    ),
+                    Card(
+                      color: Colors.red[600],
+                      margin: EdgeInsets.only(
+                          top: 40, bottom: 40, left: 50, right: 90),
+                      elevation: 0.0,
+                      child: Column(
+                        children: [
+                          Text('Alertas',
+                              style: TextStyle(
+                                  fontSize: 20.0, color: Colors.white)),
+                          Text('${list[0]['CountAlertas']}',
+                              style: TextStyle(
+                                  fontSize: 60.0, color: Colors.white)),
+                        ],
+                      ),
+                    ),
+                  ])))
+        ]));
+  }
+}
+
+class Gravesy extends StatelessWidget {
+  final List list;
+  Gravesy({this.list});
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+        margin: EdgeInsets.all(40.0),
+        elevation: 0.0,
+        child: Column(children: <Widget>[
+          Card(
+              margin: EdgeInsets.only(top: 0),
+              elevation: 3.0,
+              color: Colors.blue[600],
+              child: SizedBox(
+                  height: 200,
+                  width: 440,
+                  child: Row(mainAxisSize: MainAxisSize.max, children: <Widget>[
+                    Card(
+                      color: Colors.blue[600],
+                      margin: EdgeInsets.only(
+                          top: 40, bottom: 40, left: 60, right: 40),
+                      elevation: 0.0,
+                      child: Icon(
+                        Icons.warning_rounded,
+                        size: 100.0,
+                        color: Colors.white,
+                      ),
+                    ),
+                    Card(
+                      color: Colors.blue[600],
+                      margin: EdgeInsets.only(
+                          top: 40, bottom: 40, left: 0, right: 60),
+                      elevation: 0.0,
+                      child: Column(
+                        children: [
+                          Text('Alertas de gravedad',
+                              style: TextStyle(
+                                  fontSize: 20.0, color: Colors.white)),
+                          Text('${list[0]['CountPaciente']}',
+                              style: TextStyle(
+                                  fontSize: 60.0, color: Colors.white)),
+                        ],
+                      ),
+                    ),
+                  ]))),
+          SizedBox(
+            height: 40,
+            //width: 300,
+          ),
+          Card(
+              margin: EdgeInsets.only(top: 20),
+              elevation: 3.0,
+              color: Colors.blue[600],
+              child: SizedBox(
+                  height: 200,
+                  width: 440,
+                  child: Row(mainAxisSize: MainAxisSize.max, children: <Widget>[
+                    Card(
+                      color: Colors.blue[600],
+                      margin: EdgeInsets.only(
+                          top: 40, bottom: 40, left: 60, right: 40),
+                      elevation: 0.0,
+                      child: Icon(
+                        Icons.assignment,
+                        size: 100.0,
+                        color: Colors.white,
+                      ),
+                    ),
+                    Card(
+                      color: Colors.blue[600],
+                      margin: EdgeInsets.only(
+                          top: 40, bottom: 40, left: 50, right: 90),
+                      elevation: 0.0,
+                      child: Column(
+                        children: [
+                          Text('Bitacoras',
+                              style: TextStyle(
+                                  fontSize: 20.0, color: Colors.white)),
+                          Text('${list[0]['CountAlertas']}',
+                              style: TextStyle(
+                                  fontSize: 60.0, color: Colors.white)),
+                        ],
+                      ),
+                    ),
+                  ])))
+        ]));
   }
 }
