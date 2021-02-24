@@ -32,7 +32,7 @@ Widget _getHeader(context) {
                       borderRadius: BorderRadius.circular(20.0)),
                   color: Colors.blue[900],
                   onPressed: () {
-                    Navigator.pushNamed(context, '/semanainfo');
+                    Navigator.pop(context);
                   },
                 ),
               ),
@@ -46,7 +46,9 @@ Widget _getHeader(context) {
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(20.0)),
                 color: Colors.blue[900],
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.pushReplacementNamed(context, '/semanainfo');
+                },
               ),
               Container(
                 margin: EdgeInsets.symmetric(horizontal: 20.0),
@@ -60,9 +62,7 @@ Widget _getHeader(context) {
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(20.0)),
                   color: Colors.blue[900],
-                  onPressed: () {
-                    Navigator.pushNamed(context, '/mesinfo');
-                  },
+                  onPressed: () {},
                 ),
               ),
             ],
@@ -104,7 +104,9 @@ Widget _getHeader(context) {
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(20.0)),
                   color: Colors.blue[900],
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
                 ),
               ),
               RaisedButton(
@@ -118,7 +120,7 @@ Widget _getHeader(context) {
                     borderRadius: BorderRadius.circular(20.0)),
                 color: Colors.blue[900],
                 onPressed: () {
-                  Navigator.pushNamed(context, '/semanainfo');
+                  Navigator.pushReplacementNamed(context, '/semanainfo');
                 },
               ),
               Container(
@@ -133,9 +135,7 @@ Widget _getHeader(context) {
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(20.0)),
                   color: Colors.blue[900],
-                  onPressed: () {
-                    Navigator.pushNamed(context, '/mesinfo');
-                  },
+                  onPressed: () {},
                 ),
               ),
             ],
@@ -145,7 +145,7 @@ Widget _getHeader(context) {
           DateTime.now().day.toString() +
               "/" +
               DateTime.now().month.toString() +
-              "/" +
+              "/ " +
               DateTime.now().year.toString(),
           textAlign: TextAlign.end,
           style: TextStyle(letterSpacing: 1.2, fontSize: 20.0),
@@ -155,248 +155,254 @@ Widget _getHeader(context) {
   }
 }
 
-class Dashboard extends StatefulWidget {
-  Dashboard({Key key}) : super(key: key);
+class Mesinfo extends StatefulWidget {
+  Mesinfo({Key key}) : super(key: key);
 
-  _DashboardState createState() => _DashboardState();
+  _MesinfoState createState() => _MesinfoState();
 }
 
-class _DashboardState extends State<Dashboard> {
+class _MesinfoState extends State<Mesinfo> {
+  DateTime _hoy = DateTime.now();
+  DateTime _fin = DateTime.now().subtract(Duration(days: 31));
   final Usuario _usuario = new Usuario();
   Future<List> getData() async {
-    final response =
-        await http.post("http://192.168.1.27/demo1/verpacalertas.php", body: {
+    final response = await http
+        .post("http://192.168.1.27/demo1/verpacalertasmes.php", body: {
       "IdMedico": _usuario.id.toString(),
-      "DataIni":
-          '${DateTime.now().year.toString()}-${DateTime.now().month.toString()}-${DateTime.now().day.toString()}'
+      "DataFin": _splitter(_hoy.toString()),
+      "DataIni": _splitter(_fin.toString())
     });
     return json.decode(response.body);
   }
 
   Future<List> getData2() async {
     final response =
-        await http.post("http://192.168.1.27/demo1/vermaxfiebre.php", body: {
+        await http.post("http://192.168.1.27/demo1/vermaxfiebremes.php", body: {
       "IdMedico": _usuario.id.toString(),
-      "DataIni":
-          '${DateTime.now().year.toString()}-${DateTime.now().month.toString()}-${DateTime.now().day.toString()}'
+      "DataFin": _splitter(_hoy.toString()),
+      "DataIni": _splitter(_fin.toString())
     });
     return json.decode(response.body);
   }
 
   Future<List> getData3() async {
     final response =
-        await http.post("http://192.168.1.27/demo1/notbitacora.php", body: {
+        await http.post("http://192.168.1.27/demo1/notbitacorames.php", body: {
       "IdMedico": _usuario.id.toString(),
-      "DataIni":
-          '${DateTime.now().year.toString()}-${DateTime.now().month.toString()}-${DateTime.now().day.toString()}'
+      "DataFin": _splitter(_hoy.toString()),
+      "DataIni": _splitter(_fin.toString())
     });
     return json.decode(response.body);
   }
 
   Future<List> getData4() async {
     final response =
-        await http.post("http://192.168.1.27/demo1/pacdiarrea.php", body: {
+        await http.post("http://192.168.1.27/demo1/pacdiarreames.php", body: {
       "IdMedico": _usuario.id.toString(),
-      "DataIni":
-          '${DateTime.now().year.toString()}-${DateTime.now().month.toString()}-${DateTime.now().day.toString()}'
+      "DataFin": _splitter(_hoy.toString()),
+      "DataIni": _splitter(_fin.toString())
     });
     return json.decode(response.body);
   }
 
   Future<List> getData5() async {
     final response =
-        await http.post("http://192.168.1.27/demo1/contador1.php", body: {
+        await http.post("http://192.168.1.27/demo1/contador1mes.php", body: {
       "IdMedico": _usuario.id.toString(),
-      "DataIni":
-          '${DateTime.now().year.toString()}-${DateTime.now().month.toString()}-${DateTime.now().day.toString()}'
+      "DataFin": _splitter(_hoy.toString()),
+      "DataIni": _splitter(_fin.toString())
     });
     return json.decode(response.body);
   }
-
-  Future<List> getData6() async {
+    Future<List> getData6() async {
     final response =
-        await http.post("http://192.168.1.27/demo1/contador2.php", body: {
+        await http.post("http://192.168.1.27/demo1/contador2mes.php", body: {
       "IdMedico": _usuario.id.toString(),
-      "DataIni":
-          '${DateTime.now().year.toString()}-${DateTime.now().month.toString()}-${DateTime.now().day.toString()}'
+      "DataFin": _splitter(_hoy.toString()),
+      "DataIni": _splitter(_fin.toString())
     });
     print(
         '${DateTime.now().year.toString()}-${DateTime.now().month.toString()}-${DateTime.now().day.toString()}');
     return json.decode(response.body);
   }
 
-  calculateAge(DateTime birthDate) {
-    DateTime currentDate = DateTime.now();
-    int age = currentDate.year - birthDate.year;
-    int month1 = currentDate.month;
-    int month2 = birthDate.month;
-    if (month2 > month1) {
-      age--;
-    } else if (month1 == month2) {
-      int day1 = currentDate.day;
-      int day2 = birthDate.day;
-      if (day2 > day1) {
-        age--;
-      }
+  String _splitter(String _sfecha) {
+    try {
+      List a = (_sfecha.split(" "));
+      String auxC = a[0];
+      List b = (auxC.split("-"));
+      String fecha = (b[2] + "/" + b[1] + "/" + b[0]).toString();
+      //<{'','',''}>
+      print(fecha);
+      return auxC;
+    } catch (e) {
+      print(e);
     }
-    return age;
   }
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: <Widget>[
-        _getHeader(context),
-        Expanded(
-          child: GridView(
-            padding: EdgeInsets.only(top: 20.0),
-            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: MediaQuery.of(context).size.width >= 1300
-                    ? 3
-                    : MediaQuery.of(context).size.width >= 700
-                        ? 2
-                        : 1),
-            children: <Widget>[
-              Card(
-                margin: EdgeInsets.all(40.0),
-                elevation: 0.0,
-                color: Colors.amber[200],
-                child: Scaffold(
-                  body: new FutureBuilder(
-                    future: getData5(),
-                    builder: (context, snapshot) {
-                      if (snapshot.hasError) print(snapshot.error);
-                      return snapshot.hasData
-                          ? new Pacientesyalertas(
-                              list: snapshot.data,
-                            )
-                          : new Center(
-                              child: new CircularProgressIndicator(),
-                            );
-                    },
-                  ),
-                ),
-              ),
-              Card(
-                margin: EdgeInsets.all(40.0),
-                elevation: 0.0,
-                color: Colors.amber[200],
-                child: Scaffold(
-                  body: new FutureBuilder(
-                    future: getData6(),
-                    builder: (context, snapshot) {
-                      if (snapshot.hasError) print(snapshot.error);
-                      return snapshot.hasData
-                          ? new Gravesy(
-                              list: snapshot.data,
-                            )
-                          : new Center(
-                              child: new CircularProgressIndicator(),
-                            );
-                    },
-                  ),
-                ),
-              ),
-              Card(
-                margin: EdgeInsets.all(40.0),
-                elevation: 3.0,
-                color: Colors.lightGreen[200],
-                child: Scaffold(
-                  appBar: AppBar(
-                    title: Text("Pacientes sin registros hoy"),
-                    automaticallyImplyLeading: false,
-                  ),
-                  body: new FutureBuilder<List>(
-                    future: getData3(),
-                    builder: (context, snapshot) {
-                      if (snapshot.hasError) print(snapshot.error);
-                      return snapshot.hasData
-                          ? new CardNoBitacora(
-                              list: snapshot.data,
-                            )
-                          : new Center(
-                              child: new CircularProgressIndicator(),
-                            );
-                    },
-                  ),
-                ),
-              ),
-              Card(
-                margin: EdgeInsets.all(40.0),
-                elevation: 3.0,
-                color: Colors.lightBlue[200],
-                child: Scaffold(
-                  appBar: AppBar(
-                    title: Text("Pacientes con más alertas "),
-                    automaticallyImplyLeading: false,
-                  ),
-                  body: new FutureBuilder<List>(
-                    future: getData(),
-                    builder: (context, snapshot) {
-                      if (snapshot.hasError) print(snapshot.error);
-                      return snapshot.hasData
-                          ? new DoctorsCardWidget(
-                              list: snapshot.data,
-                            )
-                          : new Center(
-                              child: new CircularProgressIndicator(),
-                            );
-                    },
-                  ),
-                ),
-              ),
-              Card(
-                margin: EdgeInsets.all(40.0),
-                elevation: 3.0,
-                color: Colors.orange[200],
-                child: Scaffold(
-                  appBar: AppBar(
-                    title: Text("Pacientes con mayor riesgo por temperatura"),
-                    automaticallyImplyLeading: false,
-                  ),
-                  body: new FutureBuilder<List>(
-                    future: getData2(),
-                    builder: (context, snapshot) {
-                      if (snapshot.hasError) print(snapshot.error);
-                      return snapshot.hasData
-                          ? new CardFiebreMax(
-                              list: snapshot.data,
-                            )
-                          : new Center(
-                              child: new CircularProgressIndicator(),
-                            );
-                    },
-                  ),
-                ),
-              ),
-              Card(
-                margin: EdgeInsets.all(40.0),
-                elevation: 3.0,
-                color: Colors.purple[200],
-                child: Scaffold(
-                  appBar: AppBar(
-                    title: Text("Pacientes con Síndrome diarreico"),
-                    automaticallyImplyLeading: false,
-                  ),
-                  body: new FutureBuilder<List>(
-                    future: getData4(),
-                    builder: (context, snapshot) {
-                      if (snapshot.hasError) print(snapshot.error);
-                      return snapshot.hasData
-                          ? new CardDiarrea(
-                              list: snapshot.data,
-                            )
-                          : new Center(
-                              child: new CircularProgressIndicator(),
-                            );
-                    },
-                  ),
-                ),
-              ),
-            ],
-          ),
+    return Scaffold(
+      appBar: AppBar(
+        title: Center(
+          child: Text("Informacion del ultimo mes",
+              style: TextStyle(letterSpacing: 1.2)),
         ),
-      ],
+      ),
+      body: Column(
+        children: <Widget>[
+          _getHeader(context),
+          Expanded(
+            child: GridView(
+              padding: EdgeInsets.only(top: 20.0),
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: MediaQuery.of(context).size.width >= 1300
+                      ? 3
+                      : MediaQuery.of(context).size.width >= 700
+                          ? 2
+                          : 1),
+              children: <Widget>[
+                Card(
+                  margin: EdgeInsets.all(40.0),
+                  elevation: 0.0,
+                  color: Colors.amber[200],
+                  child: Scaffold(
+                    body: new FutureBuilder(
+                      future: getData5(),
+                      builder: (context, snapshot) {
+                        if (snapshot.hasError) print(snapshot.error);
+                        return snapshot.hasData
+                            ? new Pacientesyalertas(
+                                list: snapshot.data,
+                              )
+                            : new Center(
+                                child: new CircularProgressIndicator(),
+                              );
+                      },
+                    ),
+                  ),
+                ),
+                Card(
+                  margin: EdgeInsets.all(40.0),
+                  elevation: 0.0,
+                  color: Colors.amber[200],
+                  child: Scaffold(
+                    body: new FutureBuilder(
+                      future: getData6(),
+                      builder: (context, snapshot) {
+                        if (snapshot.hasError) print(snapshot.error);
+                        return snapshot.hasData
+                            ? new Gravesy(
+                                list: snapshot.data,
+                              )
+                            : new Center(
+                                child: new CircularProgressIndicator(),
+                              );
+                      },
+                    ),
+                  ),
+                ),
+                Card(
+                  margin: EdgeInsets.all(40.0),
+                  elevation: 3.0,
+                  color: Colors.lightGreen[200],
+                  child: Scaffold(
+                    appBar: AppBar(
+                      title: Text("Pacientes sin registros este mes"),
+                      automaticallyImplyLeading: false,
+                    ),
+                    body: new FutureBuilder<List>(
+                      future: getData3(),
+                      builder: (context, snapshot) {
+                        if (snapshot.hasError) print(snapshot.error);
+                        return snapshot.hasData
+                            ? new CardNoBitacora(
+                                list: snapshot.data,
+                              )
+                            : new Center(
+                                child: new CircularProgressIndicator(),
+                              );
+                      },
+                    ),
+                  ),
+                ),
+                Card(
+                  margin: EdgeInsets.all(40.0),
+                  elevation: 3.0,
+                  color: Colors.lightBlue[200],
+                  child: Scaffold(
+                    appBar: AppBar(
+                      title: Text("Pacientes con más alertas "),
+                      automaticallyImplyLeading: false,
+                    ),
+                    body: new FutureBuilder<List>(
+                      future: getData(),
+                      builder: (context, snapshot) {
+                        if (snapshot.hasError) print(snapshot.error);
+                        return snapshot.hasData
+                            ? new DoctorsCardWidget(
+                                list: snapshot.data,
+                              )
+                            : new Center(
+                                child: new CircularProgressIndicator(),
+                              );
+                      },
+                    ),
+                  ),
+                ),
+                Card(
+                  margin: EdgeInsets.all(40.0),
+                  elevation: 3.0,
+                  color: Colors.orange[200],
+                  child: Scaffold(
+                    appBar: AppBar(
+                      title: Text("Pacientes con mayor riesgo por temperatura"),
+                      automaticallyImplyLeading: false,
+                    ),
+                    body: new FutureBuilder<List>(
+                      future: getData2(),
+                      builder: (context, snapshot) {
+                        if (snapshot.hasError) print(snapshot.error);
+                        return snapshot.hasData
+                            ? new CardFiebreMax(
+                                list: snapshot.data,
+                              )
+                            : new Center(
+                                child: new CircularProgressIndicator(),
+                              );
+                      },
+                    ),
+                  ),
+                ),
+                Card(
+                  margin: EdgeInsets.all(40.0),
+                  elevation: 3.0,
+                  color: Colors.purple[200],
+                  child: Scaffold(
+                    appBar: AppBar(
+                      title: Text("Pacientes con Síndrome diarreico"),
+                      automaticallyImplyLeading: false,
+                    ),
+                    body: new FutureBuilder<List>(
+                      future: getData4(),
+                      builder: (context, snapshot) {
+                        if (snapshot.hasError) print(snapshot.error);
+                        return snapshot.hasData
+                            ? new CardDiarrea(
+                                list: snapshot.data,
+                              )
+                            : new Center(
+                                child: new CircularProgressIndicator(),
+                              );
+                      },
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
@@ -951,23 +957,6 @@ class CardNoBitacora extends StatelessWidget {
 class Pacientesyalertas extends StatelessWidget {
   final List list;
   Pacientesyalertas({this.list});
-  calculateAge(DateTime birthDate) {
-    DateTime currentDate = DateTime.now();
-    int age = currentDate.year - birthDate.year;
-    int month1 = currentDate.month;
-    int month2 = birthDate.month;
-    if (month2 > month1) {
-      age--;
-    } else if (month1 == month2) {
-      int day1 = currentDate.day;
-      int day2 = birthDate.day;
-      if (day2 > day1) {
-        age--;
-      }
-    }
-    return age;
-  }
-
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -1057,23 +1046,6 @@ class Pacientesyalertas extends StatelessWidget {
 class Gravesy extends StatelessWidget {
   final List list;
   Gravesy({this.list});
-  calculateAge(DateTime birthDate) {
-    DateTime currentDate = DateTime.now();
-    int age = currentDate.year - birthDate.year;
-    int month1 = currentDate.month;
-    int month2 = birthDate.month;
-    if (month2 > month1) {
-      age--;
-    } else if (month1 == month2) {
-      int day1 = currentDate.day;
-      int day2 = birthDate.day;
-      if (day2 > day1) {
-        age--;
-      }
-    }
-    return age;
-  }
-
   @override
   Widget build(BuildContext context) {
     return Card(

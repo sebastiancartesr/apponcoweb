@@ -1,6 +1,8 @@
 import 'package:demo1/controllers/provider.dart';
 import 'package:demo1/ventanas/medico/menutrabajador.dart';
+import 'package:demo1/ventanas/medico/mes.dart';
 import 'package:demo1/ventanas/medico/nuevaventanapaciente.dart';
+import 'package:demo1/ventanas/medico/semana.dart';
 import 'package:demo1/ventanas/medico/veralertaspacientes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -49,6 +51,9 @@ class MyApp extends StatelessWidget{
          // "/perfilprueba":(BuildContext context) =>Perfil(),
           "/calendario":(BuildContext context) =>CalendarPage2(),
           "/verunaalerta":(BuildContext context) =>VerAlertasPaciente(),
+          "/semanainfo":(BuildContext context) =>Semanainfo(),
+          "/mesinfo":(BuildContext context) =>Mesinfo(),
+          
         }
         ,
         home: LoginPage()
