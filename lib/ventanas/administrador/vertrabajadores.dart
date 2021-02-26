@@ -8,7 +8,7 @@ import 'package:demo1/controllers/usuario.dart';
 class VerTrabajadores extends StatelessWidget {
   final Usuario _usuario = new Usuario();
      
-    Future<List> getData() async {
+    Future<List> GetTrabajadores() async {
     final response = await http.post("http://192.168.1.27/demo1/vertrabajadores.php", body:{
     }); 
     return json.decode(response.body);  
@@ -18,7 +18,7 @@ class VerTrabajadores extends StatelessWidget {
     return new Scaffold(
  
       body: new FutureBuilder<List>(
-        future: getData(),
+        future: GetTrabajadores(),
         builder: (context, snapshot) {
           if (snapshot.hasError) print(snapshot.error);
           return snapshot.hasData

@@ -220,8 +220,6 @@ class _DashboardState extends State<Dashboard> {
       "DataIni":
           '${DateTime.now().year.toString()}-${DateTime.now().month.toString()}-${DateTime.now().day.toString()}'
     });
-    print(
-        '${DateTime.now().year.toString()}-${DateTime.now().month.toString()}-${DateTime.now().day.toString()}');
     return json.decode(response.body);
   }
 

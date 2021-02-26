@@ -48,7 +48,6 @@ class MyApp extends StatelessWidget{
           "/elegirbitacoramedico":(BuildContext context) =>ElegirBitacoramedico(),
           "/verpacientesdos":(BuildContext context) =>VerPacientedos(),
           "/verpacientestres":(BuildContext context) =>VerPacientetres(),
-         // "/perfilprueba":(BuildContext context) =>Perfil(),
           "/calendario":(BuildContext context) =>CalendarPage2(),
           "/verunaalerta":(BuildContext context) =>VerAlertasPaciente(),
           "/semanainfo":(BuildContext context) =>Semanainfo(),
@@ -64,7 +63,15 @@ class MyApp extends StatelessWidget{
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key key}) : super(key: key);
-
+    Future <List> Loginmedico(LoginBloc bloc) async{
+    //final response = await http.post("http://192.168.1.108/demo1/loginfuncionario.php", body:{
+      final response = await http.post("http://192.168.1.27/demo1/loginfuncionario.php", body:{
+      "Correo":bloc.email,
+      "clave":bloc.clave,
+    });
+    var datauser = json.decode(response.body);
+    return datauser;
+  }
   @override
   _LoginPageState createState() => _LoginPageState();
 }
@@ -72,13 +79,14 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
     final Usuario _usuario = new Usuario();
 
-    Future <List> _login(LoginBloc bloc) async{
+    Future <List> Loginmedico(LoginBloc bloc) async{
     //final response = await http.post("http://192.168.1.108/demo1/loginfuncionario.php", body:{
-      final response = await http.post("http://192.168.1.27/demo1/loginfuncionario.php", body:{
+      final response = await http.post("http://192.168.1.27/demo1/loginfuncionarioweb.php", body:{
       "Correo":bloc.email,
       "clave":bloc.clave,
     });
     var datauser = json.decode(response.body);
+    print(datauser.toString());
 
     if(datauser.length == 0){
       showDialog(
@@ -232,7 +240,7 @@ class _LoginPageState extends State<LoginPage> {
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.0)),
           elevation: 0.0,
           color: Color.fromRGBO(189, 219, 255, 1),
-          onPressed: snapshot.hasData ? ()=>_login(bloc): null,
+          onPressed: snapshot.hasData ? ()=>Loginmedico(bloc): null,
         );
       },
     );
